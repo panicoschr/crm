@@ -13,7 +13,7 @@ class UsersSeeder extends Seeder
     {
     factory(App\User::class, 1)->create([
         'email' => 'admin@admin.com',
-        'password' => 'password',
+        'password' => Hash::make('password'),
         ]);
     }
 }
