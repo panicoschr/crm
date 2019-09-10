@@ -11,9 +11,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Create an Employee</div>
-
                     <div class="card-body">
-
                         @if($errors->any())
                         <div class="alert alert-danger">
                             <ul class="list-group">
@@ -51,14 +49,11 @@
                         <div class="form-group text-center"> 
                             <button type="submit" class="btn btn-success">Create an Employee</button>
                         </div>                     
-
                         @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
                         @endif
-
-
                     </div>
                 </div>
             </div>
