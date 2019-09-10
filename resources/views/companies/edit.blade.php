@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-   <form action="/companies/{{$company->id}}/update" method="POST">
+   <form action="/companies/{{$company->id}}/update" method="POST" enctype="multipart/form-data">
     @csrf
 <div class="container">
     <div class="row justify-content-center">
@@ -28,7 +28,9 @@
                         </div> 
     
                           <div class="form-group">
-                            <input type="file" class="form-control" name="logo" id="logo" value="{{$company->logo}}">
+                             <img width="100px" src="{{ url($company->logo) }}" />  
+                            <input type="file" class="form-control" name="logo" id="logo">
+                       
                         </div>
                      
                         <div class="form-group"> 

@@ -24,7 +24,7 @@
                                 </li>    
                                   <li class="list-group-item">  
                              
-                                    <img src="{{ 'app/storage/app/public/logos/'.$company->logo }}" />    
+                                      <img width="100px" src="{{ url($company->logo) }}" />    
                                        
                                     {{ $company->logo }}
                                 </li>   

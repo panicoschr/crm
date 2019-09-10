@@ -5,31 +5,23 @@ namespace App\Http\Controllers;
 use App\Company;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+//use Illuminate\Support\Facades\Storage;
+//use Illuminate\Support\Facades\File;
 
-class CompaniesController extends Controller
-{
+class CompaniesController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    
-    public function __construct()
-    {
-    //   $this->middleware('auth');
-    }  
-    
-    
-    
-    
-    public function index()
-    {
-        $companies = Company::paginate(10);
-        return view('companies.index', ['companies'=>$companies]);
-        
+    public function __construct() {
+        //   $this->middleware('auth');
+    }
 
+    public function index() {
+        $companies = Company::paginate(10);
+        return view('companies.index', ['companies' => $companies]);
     }
 
     /**
@@ -37,10 +29,8 @@ class CompaniesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-          // $companies = Company::all();
-           return view('companies.create');
+    public function create() {
+        return view('companies.create');
     }
 
     /**
@@ -49,34 +39,23 @@ class CompaniesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-                 $this->validate(request(), [
-                     'name'=>'required'
-                    // 'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-                                      
-                  ])   ;
-         
-                 $data = request()->all();
-                 
-                 $company = new Company();
-                 $company->name = $data['name'];
-                 $company->email = $data['email'];
-          //       $company->logo = $data['logo'];  
-  
-
-        $logoName = $company->id.'_logo'.time().'.'.request()->logo->getClientOriginalExtension();
-
-        $request->logo->storeAs('logos',$logoName);
-     
-
-        $company->logo = $logoName;         
-                 
-   
-           
-                   $company->url = $data['url'];
-                  $company->save();
-                 return(redirect('/companies'));
+    public function store(Request $request) {
+        $this->validate(request(), [
+            'name' => 'required'
+        ]);
+        if ($request->logo) {
+            move_uploaded_file($_FILES['logo']['tmp_name'], $_FILES['logo']['name']);
+        }
+        $data = request()->all();
+        $company = new Company();
+        $company->name = $data['name'];
+        $company->email = $data['email'];
+        if ($_FILES['logo']['name'] !== '') {
+            $company->logo = $_FILES['logo']['name'];
+        }
+        $company->url = $data['url'];
+        $company->save();
+        return(redirect('/companies'));
     }
 
     /**
@@ -85,10 +64,9 @@ class CompaniesController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function show(Company $company)
-    {
-            
-            return view('companies.show', ['company' => $company]);
+    public function show(Company $company) {
+
+        return view('companies.show', ['company' => $company]);
     }
 
     /**
@@ -97,10 +75,9 @@ class CompaniesController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function edit(Company $company)
-    {
-           
-            return view('companies.edit', ['company' => $company]);
+    public function edit(Company $company) {
+
+        return view('companies.edit', ['company' => $company]);
     }
 
     /**
@@ -110,19 +87,22 @@ class CompaniesController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
-    {
-                $this->validate(request(), [
-                     'name'=>'required'
-                 ])   ;
-                     
-                 $data = request()->all();
-                 $company->name = $data['name'];
-                 $company->email = $data['email'];
-                 $company->logo = $data['logo'];
-                 $company->email = $data['url'];                 
-                 $company->save();
-                 return(redirect('/companies'));
+    public function update(Request $request, Company $company) {
+        $this->validate(request(), [
+            'name' => 'required'
+        ]);
+        if ($request->logo) {
+            move_uploaded_file($_FILES['logo']['tmp_name'], $_FILES['logo']['name']);
+        }
+        $data = request()->all();
+        $company->name = $data['name'];
+        $company->email = $data['email'];
+        if ($_FILES['logo']['name'] !== '') {
+            $company->logo = $_FILES['logo']['name'];
+        }
+        $company->url = $data['url'];
+        $company->save();
+        return(redirect('/companies'));
     }
 
     /**
@@ -131,10 +111,10 @@ class CompaniesController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Company $company)
-    {
-                $company->delete();
-                $company->employees()->delete();   //delete all employees of the current company , cascade
-                return redirect('/companies');
+    public function destroy(Company $company) {
+        $company->delete();
+        $company->employees()->delete();   //delete all employees of the current company , cascade
+        return redirect('/companies');
     }
+
 }

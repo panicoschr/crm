@@ -34,7 +34,7 @@
                             <input type="file" class="form-control" name="logo" id="logo">
                         </div>
                           <div class="form-group"> 
-                            <input type="text" class="form-control" name="url" Placeholder="Website">
+                              <input type="text" class="form-control" name="url" Placeholder="Website">
                         </div>                         
                         <div class="form-group text-center"> 
                             <button type="submit" class="btn btn-success">Create a Company</button>
