@@ -27,10 +27,10 @@
                         </div>   
                       
                         <div class="form-group">                   
-                            <select class="form-control m-bot15" name="company_id" value="{{ $employee->company->id }}">
+                            <select class="form-control m-bot15" name="company_id">
                                 @if($companies->count() > 0)
                                 @foreach($companies as $company)
-                                <option value="{{$company->id}}">{{$company->name}}</option>
+                                <option value="{{$company->id}}" {{ ($company->id == $employee->company->id) ? 'selected': '' }}>{{$company->name}}</option>
                                 @endForeach
                                 @else
                                 No Record Found

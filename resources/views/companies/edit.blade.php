@@ -26,9 +26,11 @@
                         <div class="form-group"> 
                             <input type="email" class="form-control" name="email" Placeholder="Email" value="{{$company->email}}">
                         </div> 
-                        <div class="form-group"> 
-                            <input type="text" class="form-control" name="logo" Placeholder="Phone" value="{{$company->logo}}">
-                        </div>      
+    
+                          <div class="form-group">
+                            <input type="file" class="form-control" name="logo" id="logo" value="{{$company->logo}}">
+                        </div>
+                     
                         <div class="form-group"> 
                             <input type="text" class="form-control" name="url" Placeholder="Website" value="{{$company->url}}">
                         </div>                        

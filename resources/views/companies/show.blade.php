@@ -23,6 +23,9 @@
                                     {{ $company->email }}
                                 </li>    
                                   <li class="list-group-item">  
+                             
+                                    <img src="{{ 'app/storage/app/public/logos/'.$company->logo }}" />    
+                                       
                                     {{ $company->logo }}
                                 </li>   
                                   <li class="list-group-item">  

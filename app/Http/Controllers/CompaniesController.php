@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Company;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 class CompaniesController extends Controller
 {
     /**
@@ -50,15 +53,28 @@ class CompaniesController extends Controller
     {
                  $this->validate(request(), [
                      'name'=>'required'
+                    // 'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                                      
                   ])   ;
-                     
+         
                  $data = request()->all();
                  
                  $company = new Company();
                  $company->name = $data['name'];
                  $company->email = $data['email'];
-                 $company->logo = $data['logo'];                 
-                 $company->url = $data['url'];
+          //       $company->logo = $data['logo'];  
+  
+
+        $logoName = $company->id.'_logo'.time().'.'.request()->logo->getClientOriginalExtension();
+
+        $request->logo->storeAs('logos',$logoName);
+     
+
+        $company->logo = $logoName;         
+                 
+   
+           
+                   $company->url = $data['url'];
                   $company->save();
                  return(redirect('/companies'));
     }
@@ -71,6 +87,7 @@ class CompaniesController extends Controller
      */
     public function show(Company $company)
     {
+            
             return view('companies.show', ['company' => $company]);
     }
 
@@ -117,6 +134,7 @@ class CompaniesController extends Controller
     public function destroy(Company $company)
     {
                 $company->delete();
+                $company->employees()->delete();   //delete all employees of the current company , cascade
                 return redirect('/companies');
     }
 }

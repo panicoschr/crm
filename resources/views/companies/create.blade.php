@@ -3,8 +3,7 @@
 @section('content')
 
 
-
-<form action="/companies" method="POST">
+<form action="/companies" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="container">
         <div class="row justify-content-center">
@@ -31,10 +30,10 @@
                         <div class="form-group"> 
                             <input type="email" class="form-control" name="email" Placeholder="Email">
                         </div> 
-                        <div class="form-group"> 
-                            <input type="text" class="form-control" name="logo" Placeholder="Logo">
-                        </div>  
-                        <div class="form-group"> 
+                       <div class="form-group">
+                            <input type="file" class="form-control" name="logo" id="logo">
+                        </div>
+                          <div class="form-group"> 
                             <input type="text" class="form-control" name="url" Placeholder="Website">
                         </div>                         
                         <div class="form-group text-center"> 
