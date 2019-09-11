@@ -16,6 +16,9 @@
 
                     You are logged in!
                 </div>
+                        <div class="form-group text-center"> 
+                             <a href="/apis/1/edit" class="btn btn-info my-2">API Management</a>     
+                        </div> 
             </div>
         </div>
     </div>

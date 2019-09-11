@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//To send verification email
+//Auth::routes(['verify' => true]);
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -23,21 +26,30 @@ Route::get('/admin', 'AdminController@admin')
     ->middleware('is_admin')    
     ->name('admin');
 
-Route::get('/employees', 'EmployeesController@index');
-Route::get('/employees/create', 'EmployeesController@create');
-Route::post('/employees/{employee}/update', 'EmployeesController@update');
-Route::get('/employees/{employee}', 'EmployeesController@show');
-Route::get('/employees/{employee}/edit', 'EmployeesController@edit');
-Route::post('/employees', 'EmployeesController@store');
-Route::get('/employees/{employee}/delete', 'EmployeesController@destroy');
+Route::get('/employees', 'EmployeesController@index')->middleware('verified');
+Route::get('/employees/create', 'EmployeesController@create')->middleware('verified');
+Route::post('/employees/{employee}/update', 'EmployeesController@update')->middleware('verified');
+Route::get('/employees/{employee}', 'EmployeesController@show')->middleware('verified');
+Route::get('/employees/{employee}/edit', 'EmployeesController@edit')->middleware('verified');
+Route::post('/employees', 'EmployeesController@store')->middleware('verified');
+Route::get('/employees/{employee}/delete', 'EmployeesController@destroy')->middleware('verified');
 
-Route::get('/companies', 'CompaniesController@index');
-Route::get('/companies/create', 'CompaniesController@create');
-Route::post('/companies/{company}/update', 'CompaniesController@update');
-Route::get('/companies/{company}', 'CompaniesController@show');
-Route::get('/companies/{company}/edit', 'CompaniesController@edit');
-Route::post('/companies', 'CompaniesController@store');
-Route::get('/companies/{company}/delete', 'CompaniesController@destroy');
+Route::get('/companies', 'CompaniesController@index')->middleware('verified');
+Route::get('/companies/create', 'CompaniesController@create')->middleware('verified');
+Route::post('/companies/{company}/update', 'CompaniesController@update')->middleware('verified');
+Route::get('/companies/{company}', 'CompaniesController@show')->middleware('verified');
+Route::get('/companies/{company}/edit', 'CompaniesController@edit')->middleware('verified');
+Route::post('/companies', 'CompaniesController@store')->middleware('verified');
+Route::get('/companies/{company}/delete', 'CompaniesController@destroy')->middleware('verified');
 
 
 
+//change the verified
+
+
+Route::post('/apis/{api}/update', 'ApisController@update');
+
+Route::get('/apis/{api}/edit', 'ApisController@edit');
+
+Route::get('/sms/send', 'SmsController@sendSms');
+Route::post('/sms/send', 'SmsController@postSendSms');
