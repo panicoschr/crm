@@ -1,0 +1,11 @@
+<?php
+
+// sentence.php
+
+return [
+  'welcome' => 'Bienvenue mon ami',
+  'emplist' => 'Liste des Employés',
+  'complist' => 'Liste des Entreprises',
+  'newemp' => 'Créer un nouvel Employé',
+  'newcomp' => 'Créer une nouvelle Entreprise'  
+];

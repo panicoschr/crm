@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Companies List</div>
+                <div class="card-header"><p>{{ trans('sentence.complist')}}</p></div>
 
                 <div class="card-body">
                     <ul class="list-group"> 
@@ -16,7 +16,7 @@
                         </li>  
                         @endforeach 
                     </ul>     
-                    <a href="/companies/create" class="btn btn-info my-2">Create new Company</a>   
+                    <a href="/companies/create" class="btn btn-info my-2"><p>{{ trans('sentence.newcomp')}}</p></a>   
                     <div class="row justify-content-center">
                         {{ $companies->links() }}
                     </div>

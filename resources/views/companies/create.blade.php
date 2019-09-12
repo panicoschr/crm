@@ -9,7 +9,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Create a Company</div>
+                    <div class="card-header"> <p>{{ trans('sentence.newcomp')}}</p></div>
                     <div class="card-body">
                         @if($errors->any())
                         <div class="alert alert-danger">
@@ -35,7 +35,7 @@
                               <input type="text" class="form-control" name="url" Placeholder="Website">
                         </div>                         
                         <div class="form-group text-center"> 
-                            <button type="submit" class="btn btn-success">Create a Company</button>
+                            <button type="submit" class="btn btn-success"><p>{{ trans('sentence.newcomp')}}</p></button>
                         </div>                     
                         @if (session('status'))
                         <div class="alert alert-success" role="alert">

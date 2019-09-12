@@ -10,7 +10,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Create an Employee</div>
+                    <div class="card-header"><p>{{ trans('sentence.newemp')}}</p></div>
                     <div class="card-body">
                         @if($errors->any())
                         <div class="alert alert-danger">
@@ -47,7 +47,7 @@
                             <input type="number" class="form-control" name="phone" Placeholder="Phone">
                         </div>                        
                         <div class="form-group text-center"> 
-                            <button type="submit" class="btn btn-success">Create an Employee</button>
+                            <button type="submit" class="btn btn-success"><p>{{ trans('sentence.newemp')}}</p></button>
                         </div>                     
                         @if (session('status'))
                         <div class="alert alert-success" role="alert">
