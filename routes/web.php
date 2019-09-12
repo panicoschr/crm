@@ -53,3 +53,5 @@ Route::get('/apis/{api}/edit', 'ApisController@edit');
 
 Route::get('/sms/send', 'SmsController@sendSms');
 Route::post('/sms/send', 'SmsController@postSendSms');
+
+Route::get('/users/info', 'UsersController@datatable')->middleware('auth');;
