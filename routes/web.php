@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 //To send verification email
-//Auth::routes(['verify' => true]);
+Auth::routes(['verify' => true]);
 
 Auth::routes();
 

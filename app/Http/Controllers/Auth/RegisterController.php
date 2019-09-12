@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Mail\CompanyRegistered;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -64,16 +66,23 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
-    {
+    protected function create(array $data) {
+        if ($data['entity'] == 'company') {
+            $this->sendEmailWhenNewCompany($data);
+        }
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'type' => User::DEFAULT_TYPE, 
-            'entity' => $data['entity'],   
-            'username' => $data['username'],
-            'phone' => $data['phone'],
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'type' => User::DEFAULT_TYPE,
+                    'entity' => $data['entity'],
+                    'username' => $data['username'],
+                    'phone' => $data['phone'],
         ]);
+    }
+    
+    
+    private function sendEmailWhenNewCompany(array $data){
+        Mail::to($data['email'])->send(new CompanyRegistered());
     }
 }
