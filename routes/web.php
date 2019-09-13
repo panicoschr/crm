@@ -43,8 +43,8 @@ Route::get('/companies/{company}/edit', 'CompaniesController@edit')->middleware(
 Route::post('/companies', 'CompaniesController@store')->middleware('verified');
 Route::get('/companies/{company}/delete', 'CompaniesController@destroy')->middleware('verified');
 
-Route::post('/apis/{api}/update', 'ApisController@update');
-Route::get('/apis/{api}/edit', 'ApisController@edit');
+Route::post('/apis/update', 'ApisController@update');
+Route::get('/apis/edit', 'ApisController@edit');
 
 Route::get('/sms/send', 'SmsController@sendSms');
 Route::post('/sms/send', 'SmsController@postSendSms');

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<form action="/apis/{{$api->id}}/update" method="POST">
+<form action="/apis/update" method="POST">
     @csrf
     <div class="container">
         <div class="row justify-content-center">

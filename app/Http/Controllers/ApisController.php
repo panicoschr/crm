@@ -79,6 +79,7 @@ class ApisController extends Controller
     public function update(Request $request, Api $api)
 {
         $data = request()->all();
+        $api = Api::where('id', 1)->first();
         $api->api = $data['api'];
         $api->save();
         return(redirect('/home'));

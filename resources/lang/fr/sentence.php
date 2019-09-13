@@ -7,5 +7,8 @@ return [
   'emplist' => 'Liste des Employés',
   'complist' => 'Liste des Entreprises',
   'newemp' => 'Créer un nouvel Employé',
-  'newcomp' => 'Créer une nouvelle Entreprise'  
+  'newcomp' => 'Créer une nouvelle Entreprise',   
+  'companies' => 'Entreprises',
+  'employees' => 'Employés',
+  'adminpanel' => 'Tableau de bord Administrateur'
 ];

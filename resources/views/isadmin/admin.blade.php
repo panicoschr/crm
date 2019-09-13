@@ -9,16 +9,14 @@
 
                 <div class="card-body">
                     @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
                     @endif
-
-                    You are logged in!
                 </div>
-                        <div class="form-group text-center"> 
-                             <a href="/apis/1/edit" class="btn btn-info my-2">API Management</a>     
-                        </div> 
+                <div class="form-group text-center"> 
+                    <a href="/apis/edit" class="btn btn-info my-2">API Management</a>     
+                </div> 
             </div>
         </div>
     </div>
