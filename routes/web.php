@@ -47,6 +47,9 @@ Route::post('/apis/update', 'ApisController@update');
 Route::get('/apis/edit', 'ApisController@edit');
 
 Route::get('/sms/send', 'SmsController@sendSms');
+
+Route::get('/users/info', 'UsersController@datatable')->middleware('auth');
 Route::post('/sms/send', 'SmsController@postSendSms');
 
-Route::get('/users/info', 'UsersController@datatable')->middleware('auth');;
+Route::get('/otp', 'UsersController@sendOtp')->name('otp');
+Route::post('/verifyotp', 'UsersController@verifyOtp')->name('votp');
