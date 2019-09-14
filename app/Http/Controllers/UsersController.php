@@ -84,7 +84,8 @@ class UsersController extends Controller {
             Auth::loginUsingId($user->id, TRUE);
             return view('home');
         } else {
-            $this->logoutUser();
+         return redirect('/');
+         
         }
     }
 
