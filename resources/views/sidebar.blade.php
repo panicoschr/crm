@@ -46,7 +46,16 @@
                             <li><a href="/companies/create">{{ trans('sentence.newcomp')}}</a></li>
                         </ul>
                     </li>                          
-                    <li><a href="/adminapi">{{ trans('sentence.adminpanel')}}</a></li>    
+                    <li class="treeview active"><a href="/adminapi">{{ trans('sentence.adminpanel')}}</a></li>    
+                      <li class="treeview active">
+                        <a href="/home"><span>{{ trans('sentence.userinfo')}}</span> <i class="fa fa-angle-left pull-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a href="/datatable">{{ trans('sentence.userinfonorender')}}</a></li>
+                             <li><a href="/ajax">{{ trans('sentence.userinforender')}}</a></li>
+                        </ul>
+                    </li>   
+                    <li class="treeview active"><a href="/logoutUser">{{ trans('sentence.logout')}}</a></li>                        
+                    
                 </ul>
             </li>
         </ul><!-- /.sidebar-menu -->

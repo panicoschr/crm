@@ -6,6 +6,8 @@
 
 @section('content')
     <div class="container">
+        <a href="/home">Back</a>			
+				
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
@@ -15,8 +17,11 @@
                         <table class="table" id="datatable">
                             <thead>
                                 <tr>
+                                    <th>Id</th>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>Username</th>
+                                    <th>Phone</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,8 +43,11 @@
                 "serverSide": true,
                 "ajax": "{{ route('api.user.info') }}",
                 "columns": [
+                    { "data": "id" },
                     { "data": "name" },
-                    { "data": "email" }
+                    { "data": "email" },
+                    { "data": "username" },
+                    { "data": "phone" }   
                 ]
             });
         });

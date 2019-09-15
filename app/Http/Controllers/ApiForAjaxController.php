@@ -13,7 +13,7 @@ class ApiForAjaxController extends Controller
     //
       public function getUsers()
     {
-        $query = User::select('name', 'email');
+        $query = User::select('id', 'name', 'email', 'password', 'username', 'phone');
         return datatables($query)->make(true);
     }  
     

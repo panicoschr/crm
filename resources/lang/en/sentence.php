@@ -10,5 +10,9 @@ return [
   'newcomp' => 'Create new Company',   
   'companies' => 'Companies',
   'employees' => 'Employees',
-  'adminpanel' => 'Administrator Dashboard'
+  'adminpanel' => 'Administrator Dashboard',
+  'userinfo' => 'User Information',
+  'userinfonorender' => 'No rendering of data',
+  'userinforender' => 'Rendering of data',
+  'logout' => 'Log out' 
 ];

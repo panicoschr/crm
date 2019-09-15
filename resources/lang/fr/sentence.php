@@ -10,5 +10,9 @@ return [
   'newcomp' => 'Créer une nouvelle Entreprise',   
   'companies' => 'Entreprises',
   'employees' => 'Employés',
-  'adminpanel' => 'Tableau de bord Administrateur'
+  'adminpanel' => 'Tableau de bord Administrateur',
+  'userinfo' => 'Informations utilisateur',
+  'userinfonorender' => 'Pas de Rendu de Données',
+  'userinforender' => 'Rendu de Données',
+  'logout' => 'Se Déconnecter' 
 ];

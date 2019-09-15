@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Api;
 
@@ -122,13 +123,18 @@ class UsersController extends Controller {
      * @return type
      */
     public function datatable() {
-       // $user_id = \Auth::user()->id;
-        $users = User::all(); //->where('id', $user_id);
-        return view('datatable', ['users' => $users]);
+        $user_id = \Auth::user()->id;
+        if (Auth::user()->type == 'admin') {
+            $data = User::all();
+        } else {
+            $data = User::all()->where('id', $user_id);
+        }
+
+        return view('datatables.datatable', ['data' => $data]);
     }
 
     public function ajax() {
-        return view('ajax');
+        return view('datatables.ajaxtable');
     }     
     /**
      * Show the form for editing the specified resource.
@@ -149,22 +155,25 @@ class UsersController extends Controller {
      */
     public function update() {
 
-     /*   $this->validate(request(), [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'company_id' => 'required'
+        $this->validate(request(), [
+            'name' => 'required',
+            'email' => 'required',
+            'username' => 'required',
+            'phone' => 'required',
         ]);
-*/
-        
+
+
         $data = request()->all();
         $user = User::find($data['id']);
         $user->name = $data['name'];
         $user->email = $data['email'];
-        $user->password = $data['password'];
+        if ($data['password'] != NULL && $data['password'] != '') {
+            $user->password = Hash::make($data['password']);
+        }
         $user->username = $data['username'];
         $user->phone = $data['phone'];
         $user->save();
-    }   
+    }
 
     /**
      * Remove the specified resource from storage.

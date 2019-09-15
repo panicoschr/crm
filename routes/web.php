@@ -53,14 +53,12 @@ Route::get('/companies/{company}/delete', 'CompaniesController@destroy')->middle
 Route::post('/apis/update', 'ApisController@update');
 Route::get('/apis/edit', 'ApisController@edit');
 
-Route::get('/users/info', 'UsersController@datatable');
+//Route::get('/users/info', 'UsersController@datatable');
 Route::get('/otp', 'UsersController@sendOtp')->name('otp');
 Route::post('/verifyotp', 'UsersController@verifyOtp')->name('votp');
 
-
+//Routes for the datatables
 Route::get('/datatable', 'UsersController@datatable')->name('datatable');
+Route::post('/editItem', 'UsersController@update');
 Route::get('/apiuserinfo', 'ApiForAjaxController@getUsers')->name('api.user.info');
 Route::get('/ajax', 'UsersController@ajax')->name('ajax');
-
-
-Route::post('/editItem', 'UsersController@update');
