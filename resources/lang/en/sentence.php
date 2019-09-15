@@ -4,7 +4,7 @@
 
 return [
   'welcome' => 'Welcome Friend',
-  'emplist' => 'Employee List',
+  'emplist' => 'Employees List',
   'complist' => 'Companies List',
   'newemp' => 'Create new Employee',
   'newcomp' => 'Create new Company',   

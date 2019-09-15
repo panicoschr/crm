@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <div class="container">
@@ -10,12 +10,10 @@
                     <ul class="list-group"> 
                         @foreach ($employees as $employee)
                         <li class="list-group-item">  
-                            {{ $employee->first_name }}  {{ $employee->last_name }} {{ $employee->company->name }}      
-                            <a  href="/employees/{{$employee->id}}" class="btn btn-primary btn-sm float-right">Show</a>
+                            <a href="/employees/{{$employee->id}}">{{ $employee->first_name }}  {{ $employee->last_name }} {{ $employee->company->name }}    </a>                         
                         </li>  
                         @endforeach 
-                    </ul>   
-                    <a href="/employees/create" class="btn btn-info my-2"><p>{{ trans('sentence.newemp')}}</p></a>     
+                    </ul>      
                     <div class="row justify-content-center">
                         {{ $employees->links() }}
                     </div>

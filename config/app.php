@@ -175,6 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         Intergo\SmsTo\ServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
     ],
 

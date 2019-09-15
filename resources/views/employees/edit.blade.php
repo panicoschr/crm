@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <form action="/employees/{{$employee->id}}/update" method="POST">

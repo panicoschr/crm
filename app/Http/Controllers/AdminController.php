@@ -10,7 +10,7 @@ class AdminController extends Controller
     {
         $this->middleware('auth');
     }
-    public function admin()
+    public function adminapi()
     {
         return view('isadmin.admin');
     }

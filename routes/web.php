@@ -12,21 +12,28 @@
 */
 
 Route::get('lang/{locale}', 'HomeController@lang');
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-//To send verification email
-Auth::routes(['verify' => true]);
+ //To send verification email
+//Auth::routes(['verify' => true]);
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/logoutUser', 'UsersController@logoutUserandRedirectLogin')->name('logoutUser');
 
-Route::get('/admin', 'AdminController@admin')    
+
+
+Route::get('/adminapi', 'AdminController@adminapi')    
     ->middleware('is_admin')    
     ->name('admin');
 
+Route::get('admin', function () {
+    return view('admin');
+});
 Route::get('/employees', 'EmployeesController@index')->middleware('verified');
 Route::get('/employees/create', 'EmployeesController@create')->middleware('verified');
 Route::post('/employees/{employee}/update', 'EmployeesController@update')->middleware('verified');
@@ -46,10 +53,14 @@ Route::get('/companies/{company}/delete', 'CompaniesController@destroy')->middle
 Route::post('/apis/update', 'ApisController@update');
 Route::get('/apis/edit', 'ApisController@edit');
 
-Route::get('/sms/send', 'SmsController@sendSms');
-
-Route::get('/users/info', 'UsersController@datatable')->middleware('auth');
-Route::post('/sms/send', 'SmsController@postSendSms');
-
+Route::get('/users/info', 'UsersController@datatable');
 Route::get('/otp', 'UsersController@sendOtp')->name('otp');
 Route::post('/verifyotp', 'UsersController@verifyOtp')->name('votp');
+
+
+Route::get('/datatable', 'UsersController@datatable')->name('datatable');
+Route::get('/apiuserinfo', 'ApiForAjaxController@getUsers')->name('api.user.info');
+Route::get('/ajax', 'UsersController@ajax')->name('ajax');
+
+
+Route::post('/editItem', 'UsersController@update');

@@ -29,12 +29,11 @@ class UsersController extends Controller {
      * @return type
      */
     public function sendOtp() {
-
         $api = Api::where('id', 1)->first()->api;
         $user = Auth::user();
         $useremail = Auth::user()->email;
         $userphone = Auth::user()->phone;
-        $this->logoutUser();
+        $this->logoutUserAndRedirectOtp();
         $otp = $this->generateOTP();
         $user->otp = $otp;
         $user->save();
@@ -63,11 +62,11 @@ class UsersController extends Controller {
                 "Content-Type: application/json"
             ),
         ));
-        $response = curl_exec($curl);
+        //    $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
 
-        return view('smsto.otp', ['email' => $useremail]);
+        return view('isadmin.otp', ['email' => $useremail]);
     }
 
     /**
@@ -82,10 +81,10 @@ class UsersController extends Controller {
         if ($user->otp == $otp) {
             //force to login the user
             Auth::loginUsingId($user->id, TRUE);
-            return view('home');
+            return redirect()->route('home');
         } else {
-         return redirect('/');
-         
+            //  return redirect('/');
+           return redirect()->route('login');
         }
     }
 
@@ -123,11 +122,14 @@ class UsersController extends Controller {
      * @return type
      */
     public function datatable() {
-        $user_id = \Auth::user()->id;
-        $users = User::all()->where('id', $user_id);
-        return view('users.show', ['users' => $users]);
+       // $user_id = \Auth::user()->id;
+        $users = User::all(); //->where('id', $user_id);
+        return view('datatable', ['users' => $users]);
     }
 
+    public function ajax() {
+        return view('ajax');
+    }     
     /**
      * Show the form for editing the specified resource.
      *
@@ -145,9 +147,24 @@ class UsersController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
-        //
-    }
+    public function update() {
+
+     /*   $this->validate(request(), [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'company_id' => 'required'
+        ]);
+*/
+        
+        $data = request()->all();
+        $user = User::find($data['id']);
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = $data['password'];
+        $user->username = $data['username'];
+        $user->phone = $data['phone'];
+        $user->save();
+    }   
 
     /**
      * Remove the specified resource from storage.
@@ -159,7 +176,15 @@ class UsersController extends Controller {
         //
     }
 
-    public function logoutUser() {
+    public function logoutUserAndRedirectLogin() {
+        $user = Auth::user();
+        $user->remember_token = NULL;
+        $user->save();
+        Auth::logout();
+        return redirect()->route('login');
+    }
+
+    public function logoutUserAndRedirectOtp() {
         Auth::logout();
         return redirect()->route('otp');
     }

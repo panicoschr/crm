@@ -66,7 +66,7 @@ class ApisController extends Controller
      */
     public function edit(Api $api)
     { 
-        return view('isadmin.api.edit', ['api' => $api]);
+        return view('isadmin.edit', ['api' => $api]);
     }
 
     /**

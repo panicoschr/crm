@@ -67,26 +67,7 @@
                                 </div>
                             </li>
                             @endguest
-
-
-                            @php $locale = session()->get('locale'); @endphp
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    Language <span class="caret"></span>
-                                </a>
-                                @switch($locale)
-                                @case('fr')
-                                <img src="{{asset('img/fr.png')}}" width="30px" height="20x"> French
-                                @break
-                                @default
-                                <img src="{{asset('img/uk.png')}}" width="30px" height="20x"> English
-                                @endswitch
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="lang/en"><img src="{{asset('img/uk.png')}}" width="30px" height="20x"> English</a>
-                                    <a class="dropdown-item" href="lang/fr"><img src="{{asset('img/fr.png')}}" width="30px" height="20x"> French</a>
-                                </div>
-                            </li>                     
-                        </ul>
+                       </ul>
                     </div>
                 </div>
             </nav>
