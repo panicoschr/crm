@@ -17,15 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
- //To send verification email
-//Auth::routes(['verify' => true]);
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::get('/logoutUser', 'UsersController@logoutUserandRedirectLogin')->name('logoutUser');
-
-
 
 Route::get('/adminapi', 'AdminController@adminapi')    
     ->middleware('is_admin')    
@@ -34,31 +31,30 @@ Route::get('/adminapi', 'AdminController@adminapi')
 Route::get('admin', function () {
     return view('admin');
 });
-Route::get('/employees', 'EmployeesController@index')->middleware('verified');
-Route::get('/employees/create', 'EmployeesController@create')->middleware('verified');
-Route::post('/employees/{employee}/update', 'EmployeesController@update')->middleware('verified');
-Route::get('/employees/{employee}', 'EmployeesController@show')->middleware('verified');
-Route::get('/employees/{employee}/edit', 'EmployeesController@edit')->middleware('verified');
-Route::post('/employees', 'EmployeesController@store')->middleware('verified');
-Route::get('/employees/{employee}/delete', 'EmployeesController@destroy')->middleware('verified');
+Route::get('/employees', 'EmployeesController@index')->middleware('auth');
+Route::get('/employees/create', 'EmployeesController@create')->middleware('auth');
+Route::post('/employees/{employee}/update', 'EmployeesController@update')->middleware('auth');
+Route::get('/employees/{employee}', 'EmployeesController@show')->middleware('auth');
+Route::get('/employees/{employee}/edit', 'EmployeesController@edit')->middleware('auth');
+Route::post('/employees', 'EmployeesController@store')->middleware('auth');
+Route::get('/employees/{employee}/delete', 'EmployeesController@destroy')->middleware('auth');
 
-Route::get('/companies', 'CompaniesController@index')->middleware('verified');
-Route::get('/companies/create', 'CompaniesController@create')->middleware('verified');
-Route::post('/companies/{company}/update', 'CompaniesController@update')->middleware('verified');
-Route::get('/companies/{company}', 'CompaniesController@show')->middleware('verified');
-Route::get('/companies/{company}/edit', 'CompaniesController@edit')->middleware('verified');
-Route::post('/companies', 'CompaniesController@store')->middleware('verified');
-Route::get('/companies/{company}/delete', 'CompaniesController@destroy')->middleware('verified');
+Route::get('/companies', 'CompaniesController@index')->middleware('auth');
+Route::get('/companies/create', 'CompaniesController@create')->middleware('auth');
+Route::post('/companies/{company}/update', 'CompaniesController@update')->middleware('auth');
+Route::get('/companies/{company}', 'CompaniesController@show')->middleware('auth');
+Route::get('/companies/{company}/edit', 'CompaniesController@edit')->middleware('auth');
+Route::post('/companies', 'CompaniesController@store')->middleware('auth');
+Route::get('/companies/{company}/delete', 'CompaniesController@destroy')->middleware('auth');
 
-Route::post('/apis/update', 'ApisController@update');
-Route::get('/apis/edit', 'ApisController@edit');
+Route::post('/apis/update', 'ApisController@update')->middleware('auth');
+Route::get('/apis/edit', 'ApisController@edit')->middleware('auth');
 
-//Route::get('/users/info', 'UsersController@datatable');
 Route::get('/otp', 'UsersController@sendOtp')->name('otp');
 Route::post('/verifyotp', 'UsersController@verifyOtp')->name('votp');
 
 //Routes for the datatables
-Route::get('/datatable', 'UsersController@datatable')->name('datatable');
-Route::post('/editItem', 'UsersController@update');
-Route::get('/apiuserinfo', 'ApiForAjaxController@getUsers')->name('api.user.info');
-Route::get('/ajax', 'UsersController@ajax')->name('ajax');
+Route::get('/datatable', 'UsersController@datatable')->name('datatable')->middleware('auth');
+Route::post('/editItem', 'UsersController@update')->middleware('auth');
+Route::get('/apiuserinfo', 'ApiForAjaxController@getUsers')->name('api.user.info')->middleware('auth');
+Route::get('/ajax', 'UsersController@ajax')->name('ajax')->middleware('auth');
