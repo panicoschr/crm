@@ -21,8 +21,7 @@ class UsersController extends Controller {
     }
 
     private function generateOTP() {
-     //   $otp = mt_rand(1000, 9999);
-        $otp = 1234;
+        $otp = mt_rand(1000, 9999);
         return $otp;
     }
 
@@ -39,6 +38,27 @@ class UsersController extends Controller {
         $otp = $this->generateOTP();
         $user->otp = $otp;
         $user->save();
+
+        $firstCharacter = substr($userphone, 0, 1);
+        $secondCharacter = substr($userphone, 1, 1);
+        $thirdCharacter = substr($userphone, 2, 1);
+
+        $prefix = '';
+        if ($firstCharacter == '+' && $secondCharacter == '0' && $thirdCharacter == '0') {
+            $userphone = substr($userphone, 3);
+            $prefix = '+';
+        }
+        if ($firstCharacter == '0' && $secondCharacter == '0') {
+            $userphone = substr($userphone, 2);
+            $prefix = '+';
+        }
+        if ($firstCharacter == '9') {
+            $prefix = '+357';
+        }
+        if ($firstCharacter == '+' && $secondCharacter != '0') {
+            $prefix = '';
+        }        
+        $userphone = $prefix . $userphone;
 
         $to = $userphone;
         $messages = 'Your OTP is ' . $otp;
@@ -64,7 +84,7 @@ class UsersController extends Controller {
                 "Content-Type: application/json"
             ),
         ));
-        //    $response = curl_exec($curl);
+        $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
 
@@ -83,9 +103,13 @@ class UsersController extends Controller {
         if ($user->otp == $otp) {
             //force to login the user
             Auth::loginUsingId($user->id, TRUE);
+            $user->otp = NULL;
+            $user->save();
             return redirect()->route('home');
         } else {
             //  return redirect('/');
+            $user->otp = NULL;
+            $user->save();
            return redirect()->route('login');
         }
     }
