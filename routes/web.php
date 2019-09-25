@@ -18,11 +18,12 @@ Route::get('/', function () {
 });
 
 
-//Auth::routes(['verify' => true]);
-Auth::routes();
+Auth::routes(['verify' => true]);
+//Auth::routes();
 
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+
 Route::get('/logoutuser', 'UsersController@logoutUserandRedirectLogin')->name('logoutuser');
 
 Route::get('/adminapi', 'AdminController@adminapi')    

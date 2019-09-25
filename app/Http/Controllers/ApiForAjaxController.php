@@ -11,7 +11,11 @@ class ApiForAjaxController extends Controller {
     public function getUsers() {
 
         $id = Auth::user()->id;
-        $query = User::select('id', 'name', 'email', 'password', 'username', 'phone')->where('id', $id);
+        if (Auth::user()->type == 'admin') {
+            $query = User::select('id', 'name', 'email', 'username', 'phone');
+        } else {
+            $query = User::select('id', 'name', 'email', 'username', 'phone')->where('id', $id);
+        }
         return datatables($query)->make(true);
     }
 
