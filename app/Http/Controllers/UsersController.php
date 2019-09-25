@@ -21,8 +21,7 @@ class UsersController extends Controller {
     }
 
     private function generateOTP() {
-    //   $otp = mt_rand(1000, 9999);
-        $otp = '1234';
+        $otp = mt_rand(1000, 9999);
         return $otp;
     }
 
@@ -92,14 +91,13 @@ class UsersController extends Controller {
                     "Content-Type: application/json"
                 ),
             ));
-            //   $response = curl_exec($curl);
+            $response = curl_exec($curl);
             $err = curl_error($curl);
             curl_close($curl);
 
             return view('isadmin.otp', ['email' => $useremail]);
         } else {
-
-           return view('home');
+            return view('home');
         }
     }
 
@@ -119,10 +117,9 @@ class UsersController extends Controller {
             $user->save();
             return redirect()->route('home');
         } else {
-            //  return redirect('/');
             $user->otp = NULL;
             $user->save();
-           return redirect()->route('login');
+            return redirect()->route('login');
         }
     }
 
@@ -173,10 +170,10 @@ class UsersController extends Controller {
     }
 
     public function ajax() {
-      $name = Auth::user()->name;
-      return view('datatables.ajaxtable', ['name' => $name]);
-      
-    }     
+        $name = Auth::user()->name;
+        return view('datatables.ajaxtable', ['name' => $name]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
