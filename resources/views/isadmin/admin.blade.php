@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.admin_template')
 
 @section('content')
 <div class="container">
@@ -15,7 +15,7 @@
                     @endif
                 </div>
                 <div class="form-group text-center"> 
-                    <a href="/apis/edit" class="btn btn-info my-2">API Management</a>     
+                    <a href="/apisedit" class="btn btn-info my-2">API Management</a>     
                 </div> 
             </div>
         </div>

@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+Use App\User;
 
-use Illuminate\Support\Facades\DB;
+class ApiForAjaxController extends Controller {
 
-use App\User;
-
-class ApiForAjaxController extends Controller
-{
     //
-      public function getUsers()
-    {
-        $query = User::select('id', 'name', 'email', 'password', 'username', 'phone');
+    public function getUsers() {
+
+        $id = Auth::user()->id;
+        $query = User::select('id', 'name', 'email', 'password', 'username', 'phone')->where('id', $id);
         return datatables($query)->make(true);
-    }  
-    
+    }
+
 }

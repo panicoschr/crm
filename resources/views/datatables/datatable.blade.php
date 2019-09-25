@@ -1,33 +1,24 @@
-@extends('layouts.admin')
+@extends('layouts.admin_template')
 
+@section ('styles')
+ <link rel="stylesheet" type="text/css" href="cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+ <link rel="stylesheet"
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+@endsection	  
+    
 @section('content')
-<html>
-<head>
-<title>User Info in Datatables without Rendering</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <script src="//code.jquery.com/jquery-1.12.3.js"></script>
 <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 <script
 	src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
-<link rel="stylesheet"
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-          
-        
-        
-</head>
-@section ('styles')
- <link rel="stylesheet" type="text/css" href="cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
-@endsection	  
-    
 
-<body>
 	<div class="container ">
 		{{ csrf_field() }}
 		<div class="table-responsive text-center">
@@ -134,6 +125,12 @@
 			</div>
 		</div>
 	</div>
+  
+ @endsection  
+ 
+ 
+@section('javascripts')
+
 	<script>
   $(document).ready(function() {
     $('#table').DataTable();
@@ -196,6 +193,6 @@ function fillmodalData(details){
 
 
 
-</body>
-</html>
+
+
  @endsection

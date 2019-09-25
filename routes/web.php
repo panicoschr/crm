@@ -18,11 +18,12 @@ Route::get('/', function () {
 });
 
 
-Auth::routes(['verify' => true]);
+//Auth::routes(['verify' => true]);
+Auth::routes();
 
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
-Route::get('/logoutUser', 'UsersController@logoutUserandRedirectLogin')->name('logoutUser');
+Route::get('/logoutuser', 'UsersController@logoutUserandRedirectLogin')->name('logoutuser');
 
 Route::get('/adminapi', 'AdminController@adminapi')    
     ->middleware('is_admin')    
@@ -31,6 +32,8 @@ Route::get('/adminapi', 'AdminController@adminapi')
 Route::get('admin', function () {
     return view('admin');
 });
+
+
 Route::get('/employees', 'EmployeesController@index')->middleware('auth');
 Route::get('/employees/create', 'EmployeesController@create')->middleware('auth');
 Route::post('/employees/{employee}/update', 'EmployeesController@update')->middleware('auth');
@@ -48,7 +51,7 @@ Route::post('/companies', 'CompaniesController@store')->middleware('auth');
 Route::get('/companies/{company}/delete', 'CompaniesController@destroy')->middleware('auth');
 
 Route::post('/apis/update', 'ApisController@update')->middleware('auth');
-Route::get('/apis/edit', 'ApisController@edit')->middleware('auth');
+Route::get('/apisedit', 'ApisController@edit')->middleware('auth');
 
 Route::get('/otp', 'UsersController@sendOtp')->name('otp');
 Route::post('/verifyotp', 'UsersController@verifyOtp')->name('votp');

@@ -14,5 +14,10 @@ return [
   'userinfo' => 'User Information',
   'userinfonorender' => 'No rendering of data',
   'userinforender' => 'Rendering of data',
+  'language' => 'Language',
+  'tables' => 'Tables',
+  'dashboard' => 'Dashboard',
+  'layoutoptions' => 'Layout Options',
+  'uielements' => 'UI Elements',
   'logout' => 'Log out' 
 ];

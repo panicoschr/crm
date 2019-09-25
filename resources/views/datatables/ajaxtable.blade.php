@@ -1,4 +1,4 @@
-@extends('layouts.apptable')
+@extends('layouts.admin_template')
 
 @section('styles')
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
@@ -6,8 +6,6 @@
 
 @section('content')
     <div class="container">
-        <a href="/home">Back</a>			
-				
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">

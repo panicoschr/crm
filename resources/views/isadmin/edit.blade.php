@@ -1,6 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.admin_template')
 
 @section('content')
+<div class="container">
 <form action="/apis/update" method="POST">
     @csrf
     <div class="container">
@@ -26,4 +27,5 @@
         </div>
     </div>
 </form>
+</div>
 @endsection

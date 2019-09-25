@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Api;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class ApisController extends Controller
@@ -66,7 +67,8 @@ class ApisController extends Controller
      */
     public function edit(Api $api)
     { 
-        return view('isadmin.edit', ['api' => $api]);
+        $name = Auth::user()->name;
+        return view('isadmin.edit', ['api' => $api, 'name' => $name]);
     }
 
     /**
