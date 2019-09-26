@@ -15,7 +15,7 @@ class AddEntityUsernamePhoneColumnsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('entity');
-            $table->string('username');
+            $table->string('username')->unique(); 
             $table->string('phone');
         });
     }

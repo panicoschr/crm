@@ -65,9 +65,10 @@ class ApisController extends Controller
      * @param  \App\Api  $api
      * @return \Illuminate\Http\Response
      */
-    public function edit(Api $api)
+    public function edit()
     { 
         $name = Auth::user()->name;
+        $api = Api::where('id', 1)->first();
         return view('isadmin.edit', ['api' => $api, 'name' => $name]);
     }
 
@@ -78,7 +79,7 @@ class ApisController extends Controller
      * @param  \App\Api  $api
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Api $api)
+    public function update(Request $request)
 {
         $data = request()->all();
         $api = Api::where('id', 1)->first();

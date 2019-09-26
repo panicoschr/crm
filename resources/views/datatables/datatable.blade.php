@@ -15,7 +15,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">DataTable without Rendering</h3>
+                    <h3 class="card-title"> {{ trans('sentence.userinfonorender')}}</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -81,7 +81,7 @@
                                 <label class="control-label col-sm-2" for="email">Email</label>
                                 <div class="col-sm-10">
                                     <input type="email" class="form-control" id="email">
-                                </div>
+                                </div>                            
                             </div>
                             <p class="email_error error text-center alert alert-danger hidden"></p>
 
@@ -93,7 +93,7 @@
                             </div>                                                
                             <p class="password_error error text-center alert alert-danger hidden"></p>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="username">Username:</label>
+                                <label class="control-label col-sm-2"  for="username">Username:</label>
                                 <div class="col-sm-10">
                                     <input type="name" class="form-control" id="username">
                                 </div>

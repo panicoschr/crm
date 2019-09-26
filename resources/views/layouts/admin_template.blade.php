@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Mini-CRM | Dashboard</title>
+        <title>Mini-CRM</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Font Awesome -->
@@ -27,6 +27,7 @@
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
         
+       
         
         @yield('style')
     </head>
@@ -45,20 +46,10 @@
                     </li>
 
                 </ul>
-
-
-
                 <!-- Right navbar links -->
-                <ul class="navbar-nav ml-auto">
 
-                    <li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
-                            <i class="fas fa-th-large"></i>
-                        </a>
-                    </li>
-                </ul>
             </nav>
-            <!-- /.navbar -->
+
 
             <!-- Main Sidebar Container -->
             <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -74,10 +65,10 @@
                     <!-- Sidebar user panel (optional) -->
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
-                            <img src="admin-lte/dist/img/logged-in-user.jpg" class="img-circle elevation-2" alt="User Image">
+                            <img src="{{asset('img/logged-in-user.png')}}" width="30px" height="20x" class="img-circle elevation-2" alt="User Image">                            
                         </div>
                         <div class="info">
-                            <a href="#" class="d-block">{{ $name }}</a>
+                            <a href="/home" class="d-block">{{ $name }}</a>
                         </div>
                     </div>
 
@@ -87,25 +78,7 @@
                             <!-- Add icons to the links using the .nav-icon class
                                  with font-awesome or any other icon font library -->
                             <li class="nav-item has-treeview">
-
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-copy"></i>
-                                    <p>
-                                         {{ trans('sentence.dashboard')}}
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/home" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Dashboard v1</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item has-treeview">
-                                <a href="#" class="nav-link">
+                                <a href="/home" class="nav-link">
                                     <i class="nav-icon fas fa-copy"></i>
                                     @php $locale = session()->get('locale'); @endphp 
                                     <p>
@@ -136,17 +109,12 @@
                                         </a>
                                     </li>
                                 </ul>              
-
                             </li>       
-
-
-
-
-                            <li class="nav-item has-treeview">
-                                <a href="#" class="nav-link">
+                         <li class="nav-item has-treeview">
+                                <a href="/home" class="nav-link">
                                     <i class="nav-icon fas fa-table"></i>
                                     <p>
-                                        {{ trans('sentence.tables')}}
+                                        {{ trans('sentence.reports')}}
                                         <i class="fas fa-angle-left right"></i>
                                     </p>
                                 </a>
@@ -163,12 +131,11 @@
                                             <p>{{ trans('sentence.userinfonorender')}}</p>
                                         </a>
                                     </li>
-
                                 </ul>
                             </li>
                             <li class="nav-header">ADMIN</li>
                             <li class="nav-item">
-                                <a href="/adminapi" class="nav-link">
+                                <a href="/apisedit" class="nav-link">
                                     <i class="nav-icon far fa-calendar-alt"></i>
                                     <p>
                                         {{ trans('sentence.adminpanel')}}
@@ -186,50 +153,28 @@
                                     </p>
                                 </a>
                             </li>                              
-     
-
-     
                         </ul>
                     </nav>
-                    <!-- /.sidebar-menu -->
+
                 </div>
-                <!-- /.sidebar -->
             </aside>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <div class="content-header">
-                    <div class="container-fluid">
-                        <div class="row mb-2">
-                            <div class="col-sm-6">
-                           
-                            </div><!-- /.col -->
-                            <div class="col-sm-6">
-                                <ol class="breadcrumb float-sm-right">
-                                    <li class="breadcrumb-item"><a href="\home">Home</a></li>
-                                    <li class="breadcrumb-item active">Dashboard v1</li>
-                                </ol>
-                            </div><!-- /.col -->
-                        </div><!-- /.row -->
-                    </div><!-- /.container-fluid -->
-                </div>
-                <!-- /.content-header -->
 
-                <!-- Main content -->
+                </div>
+
                 <section class="content">
                     
          @yield('content')      
                     
                     <div class="container-fluid">
 
-                 
-                        
-                        
-                        
+                          
                     </div><!-- /.container-fluid -->
                 </section>
-                <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
             <footer class="main-footer">
@@ -276,13 +221,7 @@
         <script src="admin-lte/plugins/summernote/summernote-bs4.min.js"></script>
         <!-- overlayScrollbars -->
         <script src="admin-lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-        <!-- AdminLTE App -->
         <script src="admin-lte/dist/js/adminlte.js"></script>
-        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="admin-lte/dist/js/pages/dashboard.js"></script>
-        <!-- AdminLTE for demo purposes -->
-        <script src="admin-lte/dist/js/demo.js"></script>
-    </body>
-    
+   </body>
     @yield('javascripts')
 </html>

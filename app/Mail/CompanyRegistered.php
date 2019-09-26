@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CompanyRegistered extends Mailable
+class CompanyRegistered extends Mailable 
 {
     use Queueable, SerializesModels;
 
@@ -16,10 +16,12 @@ class CompanyRegistered extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data)
     {
+            $this->data = $data;
 
     }
+
 
     /**
      * Build the message.
@@ -27,12 +29,17 @@ class CompanyRegistered extends Mailable
      * @return $this
      */
     public function build() {
+        
+        $data = $this->data;
 
         return $this->from('admin@admin.com', 'Mini-CRM Administrator')
                         ->subject('Company Registration Confirmation')
                         ->markdown('mails.emailbody')
                         ->with([
-                            'name' => 'You have just registered your company'
+                            'name' => 'You have just registered your company, ' . $data['name']. '. '.
+                            'Email is ' . $data['email']. ' , '.
+                            'Username is ' . $data['username']. ', and '.
+                            'Phone is ' . $data['phone']
         ]);
     }
 

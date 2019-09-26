@@ -95,7 +95,7 @@ class UsersController extends Controller {
             $err = curl_error($curl);
             curl_close($curl);
 
-            return view('isadmin.otp', ['email' => $useremail]);
+            return view('layouts.otp', ['email' => $useremail]);
         } else {
             return view('home');
         }
@@ -191,26 +191,36 @@ class UsersController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update() {
+    public function update(Request $request) {
 
         $this->validate(request(), [
-            'name' => 'required',
-            'email' => 'required',
-            'username' => 'required',
-            'phone' => 'required',
+            'name' => 'required', 'string', 'max:255',
+            'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
+            'username' => 'required', 'string', 'max:255', 'unique:users',
+            'phone' => 'required', 'regex:/^([0-9\s\-\+\(\)]*)$/',
         ]);
-
 
         $data = request()->all();
         $user = User::find($data['id']);
         $user->name = $data['name'];
-        $user->email = $data['email'];
+        
+        //if it  different email needs verification
+        if ($user->email != $data['email']) {
+            $user->email = $data['email'];
+            $a_new_email = true;
+        }
         if ($data['password'] != NULL && $data['password'] != '') {
             $user->password = Hash::make($data['password']);
         }
         $user->username = $data['username'];
         $user->phone = $data['phone'];
         $user->save();
+
+        //to force email verification
+        if ($a_new_email) {
+            $user->email_verified_at = NULL;
+            $user->save();
+        }
     }
 
     /**

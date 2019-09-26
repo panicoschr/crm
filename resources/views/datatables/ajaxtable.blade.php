@@ -14,7 +14,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">DataTable with Rendering</h3>
+                    <h3 class="card-title">{{ trans('sentence.userinforender')}}</h3>
                 </div>
                 <div class="card-body">
                     <table id="datatable" class="table table-bordered table-striped">
@@ -38,7 +38,7 @@
 @endsection
 
 @section('javascripts')
-<script src="admin-lte/plugins/jquery/jquery.min.js"></script>
+
 <script src="admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="admin-lte/plugins/datatables/jquery.dataTables.js"></script>
 <script src="admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
