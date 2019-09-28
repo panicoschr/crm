@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Api;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller {
 
@@ -191,25 +194,54 @@ class UsersController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    
+       
     public function update(Request $request) {
-
-        $this->validate(request(), [
-            'name' => 'required', 'string', 'max:255',
-            'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
-            'username' => 'required', 'string', 'max:255', 'unique:users',
-            'phone' => 'required', 'regex:/^([0-9\s\-\+\(\)]*)$/',
-        ]);
 
         $data = request()->all();
         $user = User::find($data['id']);
+        $user_id = $user->id;
+
+        if ($data['password'] !== NULL && $data['password'] !== '') {
+            $validator = Validator::make($request->all(), [
+                        'name' => ['required', 'max:255'],
+                        'email' => ['email', 'required', 'max:50', Rule::unique('users')->ignore($user_id)],
+                        'password' => ['required', 'string', 'min:8'],
+                        'username' => ['string', 'required', 'min:6', 'max:30', Rule::unique('users')->ignore($user_id)],
+                        'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                        'name' => ['required', 'max:255'],
+                        'email' => ['email', 'required', 'max:50', Rule::unique('users')->ignore($user_id)],
+                        'username' => ['string', 'required', 'min:6', 'max:30', Rule::unique('users')->ignore($user_id)],
+                        'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+            ]);
+        }
+
+        if ($validator->fails()) {
+
+            if ($request->ajax()) {
+                return response()->json(array(
+                            'success' => false,
+                            'message' => 'There are incorect values in the form!',
+                            'errors' => $validator->getMessageBag()->toArray()
+                                ), 422);
+            }
+            $this->throwValidationException(
+                    $request, $validator
+            );
+        }
+
+        $a_new_email = false;
         $user->name = $data['name'];
-        
-        //if it  different email needs verification
+
+        //if it is a different email it needs verification
         if ($user->email != $data['email']) {
             $user->email = $data['email'];
             $a_new_email = true;
         }
-        if ($data['password'] != NULL && $data['password'] != '') {
+        if ($data['password'] !== NULL && $data['password'] !== '') {
             $user->password = Hash::make($data['password']);
         }
         $user->username = $data['username'];

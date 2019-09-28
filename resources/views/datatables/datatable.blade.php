@@ -64,6 +64,12 @@
                     <div class="modal-body">
                         <form class="form-horizontal" role="form">
                             <div class="form-group">
+                                <div class="col-sm-10">
+                                    <textarea name="error" id="errorid" class="form-control">
+                                    </textarea>                                    
+                                </div>
+                            </div>                            
+                            <div class="form-group">
                                 <label class="control-label col-sm-2" for="id">ID</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="id" disabled>
@@ -75,31 +81,24 @@
                                     <input type="name" class="form-control" id="name">
                                 </div>
                             </div>
-                            <p class="name_error error text-center alert alert-danger hidden"></p>
-
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="email">Email</label>
                                 <div class="col-sm-10">
                                     <input type="email" class="form-control" id="email">
                                 </div>                            
                             </div>
-                            <p class="email_error error text-center alert alert-danger hidden"></p>
-
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="password">Password:</label>
                                 <div class="col-sm-10">
                                     <input type="name" class="form-control" id="password">
                                 </div>
                             </div>                                                
-                            <p class="password_error error text-center alert alert-danger hidden"></p>
                             <div class="form-group">
                                 <label class="control-label col-sm-2"  for="username">Username:</label>
                                 <div class="col-sm-10">
                                     <input type="name" class="form-control" id="username">
                                 </div>
                             </div>
-                            <p
-                                class="username_error error text-center alert alert-danger hidden"></p>
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="phone">Phone</label>
                                 <div class="col-sm-10">
@@ -130,14 +129,11 @@
 <script src="admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script src="admin-lte/dist/js/adminlte.min.js"></script>
 
-
-
 <script>
     $(document).ready(function() {
     $('#table').DataTable();
     } );
 </script>
-
 
 <script>
     $(document).on('click', '.edit-modal', function() {
@@ -153,7 +149,8 @@
     $('.form-horizontal').show();
     var stuff = $(this).data('info').split(',');
     fillmodalData(stuff)
-    $('#myModal').modal('show');
+    $('#myModal').modal('show');  
+    $("#errorid").hide();
     });
 
     function fillmodalData(details){
@@ -162,7 +159,8 @@
     $('#email').val(details[2]);
     $('#username').val(details[4]);
     $('#phone').val(details[5]);
-    }
+     }
+    
     $('.modal-footer').on('click', '.edit', function() {
     $.ajax({
     type: 'post',
@@ -177,15 +175,23 @@
     'phone': $('#phone').val()
     },
     success: function(data) {
-    location.reload(); 
+     location.reload() 
+    },
+      error: function(jqXhr, json, errorThrown){// this are default for ajax errors 
+        var errors = jqXhr.responseJSON;
+        var errorsHtml = '';
+        $.each(errors['errors'], function (index, value) {
+            errorsHtml += '' + value + '';
+        });
+        errorsHtml = 'Errors detected : ' + errorsHtml + ' ';
+        $('#errorid').show();
+        $('#myModal').modal('show'); 
+        $('#errorid').val(errorsHtml);
     }
     });
     });
 
 </script>
-
-
-
 
 <script>
     $(function () {
