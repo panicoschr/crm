@@ -32,7 +32,7 @@ class CompanyRegistered extends Mailable
         
         $data = $this->data;
 
-        return $this->from('admin@admin.com', 'Mini-CRM Administrator')
+        return $this->from('info@mepro.co', 'Mini-CRM Administrator')
                         ->subject('Company Registration Confirmation')
                         ->markdown('mails.emailbody')
                         ->with([
