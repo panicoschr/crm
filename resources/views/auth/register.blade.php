@@ -91,9 +91,9 @@
 
                         <div class="form-group row">
                             <label for="entity" class="col-md-4 col-form-label text-md-right">{{ __('Entity') }}</label>
-
                             <div class="col-md-6">
-                                <select id="entity" class="form-control @error('entity') is-invalid @enderror" name="entity" required autofocus>
+                                <select id="entity" onchange="myFunction()" class="form-control @error('entity') is-invalid @enderror" name="entity" required autofocus>
+                                     <option selected disabled>Select an Entity</option>
                                     <option value="employee">Employee</option>
                                     <option value="company">Company</option>
                                 </select>
@@ -103,8 +103,33 @@
                                 </span>
                                 @enderror
                             </div>
-                        </div>                        
+                        </div>      
+                        <div class="form-group row">
+                            <label id="lburl" for="url" class="col-md-4 col-form-label text-md-right">{{ __('Website') }}</label>
 
+                            <div class="col-md-6">
+                                <input id="url" type="text" class="form-control @error('url') is-invalid @enderror" name="url" value="{{ old('url') }}" autocomplete="url" autofocus>
+
+                                @error('url')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>        
+                        <div class="form-group row">
+                            <label for="logo" id="lblogo" class="col-md-4 col-form-label text-md-right">{{ __('Logo') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="logo" type="text" class="form-control @error('logo') is-invalid @enderror" name="logo" value="{{ old('logo') }}" autocomplete="logo" autofocus>
+
+                                @error('logo')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>   
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -119,3 +144,30 @@
     </div>
 </div>
 @endsection
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('logo').style.display = 'none';
+    document.getElementById('lblogo').style.display = 'none';
+    document.getElementById('url').style.display = 'none';
+    document.getElementById('lburl').style.display = 'none';
+    }, false);
+
+    function myFunction() {
+    if (document.getElementById('entity').value === 'employee') {
+    document.getElementById('logo').style.display = 'none';
+    document.getElementById('lblogo').style.display = 'none';
+    document.getElementById('url').style.display = 'none';
+    document.getElementById('lburl').style.display = 'none';
+    }
+
+    if (document.getElementById('entity').value === 'company') {
+    document.getElementById('logo').style.display = 'block';
+    document.getElementById('lblogo').style.display = 'block';
+    document.getElementById('url').style.display = 'block';
+    document.getElementById('lburl').style.display = 'block';        
+    }
+
+    }
+</script>

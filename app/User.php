@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'entity', 'username', 'phone'
+        'name', 'email', 'password', 'entity', 'username', 'phone', 'url', 'logo', 'company_id'
     ];
 
     /**
@@ -45,5 +46,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isAdmin()    {        
     return $this->type === self::ADMIN_TYPE;    
 }
-    
+ 
+
+public function children(){
+  return $this->hasMany( 'App\User', 'company_id', 'id' );
+}
+
+public function parent(){
+  return $this->hasOne( 'App\User', 'id', 'company_id' );
+}
+
 }

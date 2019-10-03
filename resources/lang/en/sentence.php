@@ -4,13 +4,14 @@
 
 return [
   'welcome' => 'Welcome Friend',
-  'emplist' => 'Employees List',
-  'complist' => 'Companies List',
+  'emplist' => 'Employees',
+  'complist' => 'Companies',
   'newemp' => 'Create new Employee',
   'newcomp' => 'Create new Company',   
   'companies' => 'Companies',
   'employees' => 'Employees',
-  'adminpanel' => 'Administrator Dashboard',
+  'adminpanel' => 'Admin Dashboard',
+  'apimanagement'  => 'API Management',
   'userinfo' => 'User Information',
   'userinfonorender' => 'User Info without Render',
   'userinforender' => 'User Info with Render',

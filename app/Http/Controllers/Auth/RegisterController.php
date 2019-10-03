@@ -49,14 +49,28 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        
+        
+ if ($data['url'] !== NULL && $data['url'] !== '') {
             return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'entity' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255', 'min:8', 'unique:users'],            
-            'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
-        ]);
+                        'name' => ['required', 'string', 'max:255'],
+                        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                        'password' => ['required', 'string', 'min:8', 'confirmed'],
+                        'entity' => ['required', 'string', 'max:255'],
+                        'username' => ['required', 'string', 'max:255', 'min:8', 'unique:users'],
+                        'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+                        'url' => ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'],
+            ]);
+        } else {
+            return Validator::make($data, [
+                        'name' => ['required', 'string', 'max:255'],
+                        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                        'password' => ['required', 'string', 'min:8', 'confirmed'],
+                        'entity' => ['required', 'string', 'max:255'],
+                        'username' => ['required', 'string', 'max:255', 'min:8', 'unique:users'],
+                        'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+            ]);
+        }
     }
 
     /**
@@ -74,6 +88,8 @@ class RegisterController extends Controller
                     'entity' => $data['entity'],
                     'username' => $data['username'],
                     'phone' => $data['phone'],
+                    'url' => $data['url'],
+                    'logo' => $data['logo'],
         ]);
     }
     

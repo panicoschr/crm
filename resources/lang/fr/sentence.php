@@ -4,13 +4,14 @@
 
 return [
   'welcome' => 'Bienvenue mon ami',
-  'emplist' => 'Liste des Employés',
-  'complist' => 'Liste des Entreprises',
+  'emplist' => 'Des Employés',
+  'complist' => 'Des Entreprises',
   'newemp' => 'Créer un nouvel Employé',
   'newcomp' => 'Créer une nouvelle Entreprise',   
   'companies' => 'Entreprises',
   'employees' => 'Employés',
   'adminpanel' => 'Tableau de bord Admin',
+  'apimanagement'  => 'Le API management',
   'userinfo' => 'Informations utilisateur',
   'userinfonorender' => 'Info sans rendu',
   'userinforender' => 'Info avec rendu',    

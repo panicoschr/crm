@@ -12,6 +12,7 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
+
 class UsersController extends Controller {
 
     /**
@@ -131,8 +132,107 @@ class UsersController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-        //
+    public function create(Request $request) {
+        
+            $data = request()->all();
+            
+            
+   /*         
+ if (request()->logo)
+{      
+// Where the file is going to be stored
+ $target_dir = '/';
+ $file = $_FILES['logo']['name'];
+ $path = pathinfo($file);
+ $filename = $path['filename'];
+ $ext = $path['extension'];
+ $temp_name = $_FILES['logo']['tmp_name'];
+ $path_filename_ext = $target_dir.$filename.'.'.$ext;
+ move_uploaded_file($temp_name,$path_filename_ext);
+
+}  
+*/
+        
+            
+
+            
+        $user = new User();
+        
+             if ($data['entity'] == 'employee') {
+            $validator = Validator::make($request->all(), [
+                        'name' => ['required', 'max:255'],
+                        'email' => ['email', 'required', 'max:50', 'unique:users'],
+                        'password' => ['required', 'string', 'min:8'],
+                        'username' => ['string', 'required', 'min:6', 'max:30', 'unique:users'],
+                        'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+
+            ]);
+             }     
+             
+             if ($data['entity'] == 'company') {
+            $validator = Validator::make($request->all(), [
+                        'name' => ['required', 'max:255'],
+                        'email' => ['email', 'required', 'max:50', 'unique:users'],
+                        'password' => ['required', 'string', 'min:8'],
+                        'username' => ['string', 'required', 'min:6', 'max:30', 'unique:users'],
+                        'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+                        'url' => ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'],                
+
+            ]);
+             }              
+ 
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json(array(
+                            'success' => false,
+                            'message' => 'There are incorect values in the form!',
+                            'errors' => $validator->getMessageBag()->toArray()
+                                ), 422);
+            }
+            $this->throwValidationException(
+                    $request, $validator
+            );
+        }
+
+         
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = Hash::make($data['password']);
+       $user->username = $data['username'];
+        $user->phone = $data['phone'];
+        
+        if ($data['entity'] != 'all') {
+            $user->entity = $data['entity'];
+        }
+        //if it is an employee save the company
+        if ($data['entity'] == 'employee') {
+            $user->company_id = $data['company'];
+        }
+        //    if ($data['entity'] == 'company') {
+            $user->url = $data['url'];
+            
+            //temporary arrangement
+          //  $user->logo = $data['logo'];    
+           
+      //       if ($_FILES['logo']['name'] !== '') {
+       //    $user->logo = $_FILES['logo']['name'];}
+     
+        //   $user->logo = $data['logo'];            
+      //  }
+/*
+
+        
+        if ($data['entity'] == 'company') {
+            $user->logo = $data['logo'];
+            $user->url = $data['url'];
+        }
+
+        //entity must be employeee or company to save
+      
+        
+      */ 
+        
+        $user->save();
     }
 
     /**
@@ -159,17 +259,29 @@ class UsersController extends Controller {
      * 
      * @return type
      */
-    public function datatable() {
+    public function datatable($entity_value) {
+        
         $user_id = \Auth::user()->id;
         $name = Auth::user()->name;
         if (Auth::user()->type == 'admin') {
-            $data = User::all();
+
+            if ($entity_value =='all') {
+                $data = User::all();
+            } else {
+                $data = User::all()->where('entity', $entity_value);
+            }
         } else {
             $data = User::all()->where('id', $user_id);
-        }
+            $entity_value = Auth::user()->entity;
+        } 
+        
+        //to pass the companies for the drop down item in the modal
+      $companies = User::all()->where('entity', 'company');
 
+        
+        
         return view('datatables.datatable', ['data' => $data,
-            'name' => $name]);
+            'name' => $name, 'entity_value' => $entity_value, 'companies'=>$companies]);
     }
 
     public function ajax() {
@@ -202,23 +314,51 @@ class UsersController extends Controller {
         $user = User::find($data['id']);
         $user_id = $user->id;
 
-        if ($data['password'] !== NULL && $data['password'] !== '') {
-            $validator = Validator::make($request->all(), [
-                        'name' => ['required', 'max:255'],
-                        'email' => ['email', 'required', 'max:50', Rule::unique('users')->ignore($user_id)],
-                        'password' => ['required', 'string', 'min:8'],
-                        'username' => ['string', 'required', 'min:6', 'max:30', Rule::unique('users')->ignore($user_id)],
-                        'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
-            ]);
-        } else {
-            $validator = Validator::make($request->all(), [
-                        'name' => ['required', 'max:255'],
-                        'email' => ['email', 'required', 'max:50', Rule::unique('users')->ignore($user_id)],
-                        'username' => ['string', 'required', 'min:6', 'max:30', Rule::unique('users')->ignore($user_id)],
-                        'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
-            ]);
+        //to validate url
+        if ($data['entity'] == 'employee') {
+            if ($data['password'] !== NULL && $data['password'] !== '') {
+                $validator = Validator::make($request->all(), [
+                            'name' => ['required', 'max:255'],
+                            'email' => ['email', 'required', 'max:50', Rule::unique('users')->ignore($user_id)],
+                            'password' => ['required', 'string', 'min:8'],
+                            'username' => ['string', 'required', 'min:6', 'max:30', Rule::unique('users')->ignore($user_id)],
+                            'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+                ]);
+            } else {
+                $validator = Validator::make($request->all(), [
+                            'name' => ['required', 'max:255'],
+                            'email' => ['email', 'required', 'max:50', Rule::unique('users')->ignore($user_id)],
+                            'username' => ['string', 'required', 'min:6', 'max:30', Rule::unique('users')->ignore($user_id)],
+                            'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+                ]);
+            }
+        }
+        
+      if ($data['entity'] == 'company') {
+            if ($data['password'] !== NULL && $data['password'] !== '') {
+                $validator = Validator::make($request->all(), [
+                            'name' => ['required', 'max:255'],
+                            'email' => ['email', 'required', 'max:50', Rule::unique('users')->ignore($user_id)],
+                            'password' => ['required', 'string', 'min:8'],
+                            'username' => ['string', 'required', 'min:6', 'max:30', Rule::unique('users')->ignore($user_id)],
+                            'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+                            'url' => ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'],
+                ]);
+            } else {
+                $validator = Validator::make($request->all(), [
+                            'name' => ['required', 'max:255'],
+                            'email' => ['email', 'required', 'max:50', Rule::unique('users')->ignore($user_id)],
+                            'username' => ['string', 'required', 'min:6', 'max:30', Rule::unique('users')->ignore($user_id)],
+                            'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+                            'url' => ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'],
+                ]);
+            }
         }
 
+        /*
+            if ($data['logo']) {
+            move_uploaded_file($_FILES['logo']['tmp_name'], $_FILES['logo']['name']);}
+*/
         if ($validator->fails()) {
 
             if ($request->ajax()) {
@@ -246,6 +386,22 @@ class UsersController extends Controller {
         }
         $user->username = $data['username'];
         $user->phone = $data['phone'];
+        
+        if ($data['entity'] == 'employee') {
+            $user->company_id = $data['company'];
+        }  
+      //      if ($data['entity'] == 'company') {
+            $user->url = $data['url'];
+         //   $user->logo = $data['logo'];
+            
+            /*
+           if ($_FILES['logo']['name'] !== '') {
+           $user->logo = $_FILES['logo']['name'];}
+           */
+        
+
+      //  }
+        
         $user->save();
 
         //to force email verification
@@ -253,6 +409,9 @@ class UsersController extends Controller {
             $user->email_verified_at = NULL;
             $user->save();
         }
+        
+        //to update the company for the employee
+
     }
 
     /**
@@ -261,8 +420,12 @@ class UsersController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
-        //
+    public function destroy(Request $request) {
+        $data = request()->all();
+        $user = User::find($data['id']);
+        $user->delete();
+     //   $user->save();
+//return response ()->json ();
     }
 
     public function logoutUserAndRedirectLogin() {
