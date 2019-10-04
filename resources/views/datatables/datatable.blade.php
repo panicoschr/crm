@@ -35,19 +35,19 @@
                             @if (($entity_value === 'employee') || ($entity_value === 'company'))      
                             @if (auth()->user()->isadmin()) 
                             <tr>       
-                        <button class="new-modal btn btn-info"
-                                <span class="glyphicon glyphicon-trash"></span> Insert
+                        <button class="new-modal btn btn-info"    
+                            <span class="glyphicon glyphicon-trash"></span> Insert
                         </button>
-                    </tr>
-                    @endif
-                    @endif      
-
-
-                    <tr>
-                        <th>Id</th>
+                        </tr>
+                        @endif
+                        @endif      
+                        <tr>
+                            <th>Id</th>
                             <th>Name</th>
                             <th>Email</th>
+                            @if (($entity_value === 'employee') || ($entity_value === 'company'))  
                             <th>Password</th>
+                            @endif 
                             <th>Username</th>
                             <th>Phone</th>
                             @if ($entity_value === 'employee') 
@@ -59,38 +59,35 @@
                             @endif
                             @if ($entity_value == 'all')  
                             <th>Entity</th>                             
-                            <th>Company</th>
-                            <th>Website</th>
-                            <th>Logo</th>
                             @endif       
                             @if (($entity_value === 'employee') || ($entity_value === 'company'))  
-                            @if (auth()->user()->isadmin()) 
                             <th>Action</th>  
                             @endif 
-                            @endif 
-                    </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($data as $item)
-                        <tr class="item{{$item->id}}">
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($data as $item)
+                            <tr class="item{{$item->id}}">
                                 <td>{{$item->id}}</td>
                                 <td>{{$item->name}}</td>
                                 <td>{{$item->email}}</td>
+                                @if (($entity_value === 'employee') || ($entity_value === 'company'))  
                                 <td>************</td>
+                                @endif                                 
                                 <td>{{$item->username}}</td>
                                 <td>{{$item->phone}}</td>
                                 @if ($entity_value === 'employee') 
                                 <td>{{$item->parent['name']}}</td>
                                 @endif           
                                 @if ($entity_value === 'company') 
-                                <td>{{$item->url}}</td>
-                                <td>{{$item->logo}}</td>
+                                <td>{{$item->url}}
+                                </td>
+                                <td>
+                                    <img   src='{{ asset($item->logo) }}' width="100"  height="100">
+                                </td>
                                 @endif       
                                 @if ($entity_value === 'all')  
                                 <td>{{$item->entity}}</td>
-                                <td>{{$item->parent['name']}}</td>
-                                <td>{{$item->url}}</td>
-                                <td>{{$item->logo}}</td>
                                 @endif    
 
                                 @if (auth()->user()->isadmin()) 
@@ -114,15 +111,6 @@
                                         <span class="glyphicon glyphicon-edit"></span> Edit
                                     </button></td>                            
                                 @endif 
-
-
-                                
-    
-                                
-                                
-                                
-                                
-                                
                             </tr>
                             @endforeach
                         </tbody>
@@ -182,38 +170,39 @@
                                     <input type="name" class="form-control" id="phone">
                                 </div>
                             </div>
-                        <div class="form-group">
+                            <div class="form-group">
                                 <div class="col-sm-10">
                                     <input type = "name" class="form-control" id="entity" value="{{$entity_value}}">
                                 </div>
                             </div>                              
                             <div class="form-group">               
-                              <label class="control-label col-sm-2" for="company" id="lbcompany">Company</label>
-                               <div class="col-sm-10">
-                                <select type="name" class="form-control" id="company">
-                                  <option value="">Select a company</option>
-                                    @if($companies->count() > 0)
-                                    @foreach($companies as $company)
-                                    <option value="{{$company->id}}">{{$company->name}}</option>
-                                    @endForeach
-                                    @else
-                                    No Record Found
-                                    @endif   
-                                </select>  
+                                <label class="control-label col-sm-2" for="company" id="lbcompany">Company</label>
+                                <div class="col-sm-10">
+                                    <select type="name" class="form-control" id="company">
+                                        <option value="">Select a company</option>
+                                        @if($companies->count() > 0)
+                                        @foreach($companies as $company)
+                                        <option value="{{$company->id}}">{{$company->name}}</option>
+                                        @endForeach
+                                        @else
+                                        No Record Found
+                                        @endif   
+                                    </select>  
                                 </div> 
                             </div>   
                             <div class="form-group"> 
                                 <label class="control-label col-sm-2" for="url" id="lburl">Website</label>
                                 <input type="text" class="form-control" name="url" id="url">
                             </div> 
-                        
+
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="logo" id="lblogo">Logo</label>
+                                <img   src='{{ asset($item->logo) }}' width="30"  height="30" id="iclogo">
                                 <input type="text" class="form-control" name="logo" id="logo">
-                           
+
                             </div>     
 
-                            
+
                         </form>
                         <div class="deleteContent">
                             Are you Sure you want to delete <span class="name"></span> ? <span
@@ -223,8 +212,8 @@
                             <button type="button" class="btn actionBtn" data-dismiss="modal">
                                 <span id="footer_action_button" class='glyphicon'> </span>
                             </button>
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">
-                                <span class='glyphicon glyphicon-remove'></span> Close
+                            <button type="button" class="btn btn-warning" onClick="window.location.reload();" data-dismiss="modal">
+                                <span id="close_action_button" class='glyphicon glyphicon-remove'></span> Close
                             </button>
                         </div>
                     </div>
@@ -265,10 +254,11 @@
     var stuff = $(this).data('info').split(',');
     fillmodalData(stuff)
     $('#myModal').modal('show');  
-    
+
     if($("#entity").val() === 'employee') {
     $("#logo").hide();
     $("#lblogo").hide();    
+    $("#iclogo").hide();    
     $("#url").hide();
     $("#lburl").hide();
     }
@@ -276,7 +266,7 @@
     $("#company").hide();
     $("#lbcompany").hide();    
     }    
-    
+
     $("#errorid").hide();
     $("#entity").hide();
     });
@@ -292,8 +282,8 @@
     $('#url').val(details[8]);
     $('#logo').val(details[9]);
 
-     }
-    
+    }
+
     $('.modal-footer').on('click', '.edit', function() {
     $.ajax({
     type: 'post',
@@ -314,18 +304,18 @@
 
     },
     success: function(data) {
-     location.reload() 
+    location.reload() 
     },
-      error: function(jqXhr, json, errorThrown){// this are default for ajax errors 
-        var errors = jqXhr.responseJSON;
-        var errorsHtml = '';
-        $.each(errors['errors'], function (index, value) {
-            errorsHtml += '' + value + '';
-        });
-        errorsHtml = 'Errors detected : ' + errorsHtml + ' ';
-        $('#errorid').show();
-        $('#myModal').modal('show'); 
-        $('#errorid').val(errorsHtml);
+    error: function(jqXhr, json, errorThrown){// this are default for ajax errors 
+    var errors = jqXhr.responseJSON;
+    var errorsHtml = '';
+    $.each(errors['errors'], function (index, value) {
+    errorsHtml += '' + value + '';
+    });
+    errorsHtml = 'Errors detected : ' + errorsHtml + ' ';
+    $('#errorid').show();
+    $('#myModal').modal('show'); 
+    $('#errorid').val(errorsHtml);
     }
     });
     });
@@ -347,10 +337,11 @@
     $('.deleteContent').hide();
     $('.form-horizontal').show();
     $('#myModal').modal('show');  
-    
- if($("#entity").val() === 'employee') {
+
+    if($("#entity").val() === 'employee') {
     $("#logo").hide();
     $("#lblogo").hide();    
+    $("#iclogo").hide(); 
     $("#url").hide();
     $("#lburl").hide();
     }
@@ -358,12 +349,12 @@
     $("#company").hide();
     $("#lbcompany").hide();    
     }    
-    
+
     $("#errorid").hide();
     $("#entity").hide();
     });   
 
-    
+
     $('.modal-footer').on('click', '.new', function() {
     $.ajax({
     type: 'post',
@@ -381,20 +372,20 @@
     'logo': $('#logo').val()
 
     },
-     
+
     success: function(data) {
-     location.reload() 
+    location.reload() 
     },
-      error: function(jqXhr, json, errorThrown){// this are default for ajax errors 
-        var errors = jqXhr.responseJSON;
-        var errorsHtml = '';
-        $.each(errors['errors'], function (index, value) {
-            errorsHtml += '' + value + '';
-        });
-        errorsHtml = 'Errors detected : ' + errorsHtml + ' ';
-        $('#errorid').show();
-        $('#myModal').modal('show'); 
-        $('#errorid').val(errorsHtml);
+    error: function(jqXhr, json, errorThrown){// this are default for ajax errors 
+    var errors = jqXhr.responseJSON;
+    var errorsHtml = '';
+    $.each(errors['errors'], function (index, value) {
+    errorsHtml += '' + value + '';
+    });
+    errorsHtml = 'Errors detected : ' + errorsHtml + ' ';
+    $('#errorid').show();
+    $('#myModal').modal('show'); 
+    $('#errorid').val(errorsHtml);
     }
     });
     });
@@ -404,59 +395,64 @@
 
 
 <script>
-$(document).on('click', '.delete-modal', function() {
-        $('#footer_action_button').text(" Delete");
-        $('#footer_action_button').removeClass('glyphicon-check');
-        $('#footer_action_button').addClass('glyphicon-trash');
-        $('.actionBtn').removeClass('btn-success');
-        $('.actionBtn').addClass('btn-danger');
-        $('.actionBtn').removeClass('edit');
-        $('.actionBtn').addClass('delete');
-        $('.modal-title').text('Delete');
-        $('.deleteContent').show();
-        $('.form-horizontal').hide();
-        var stuff = $(this).data('info').split(',');
-        $('.id').text(stuff[0]);
-        $('.name').html(stuff[1]);
-        $('#myModal').modal('show');
+    $(document).on('click', '.delete-modal', function() {
+    $('#footer_action_button').text(" Delete");
+    $('#footer_action_button').removeClass('glyphicon-check');
+    $('#footer_action_button').addClass('glyphicon-trash');
+    $('.actionBtn').removeClass('btn-success');
+    $('.actionBtn').addClass('btn-danger');
+    $('.actionBtn').removeClass('edit');
+    $('.actionBtn').addClass('delete');
+    $('.modal-title').text('Delete');
+    $('.deleteContent').show();
+    $('.form-horizontal').hide();
+    var stuff = $(this).data('info').split(',');
+    $('.id').text(stuff[0]);
+    $('.name').html(stuff[1]);
+    $('#myModal').modal('show');
     });
-    
-    
+
+
     $('.modal-footer').on('click', '.delete', function() {
-        $.ajax({
-            type: 'post',
-            url: '/deleteItem',
-            data: {
-                '_token': $('input[name=_token]').val(),
-                'id': $('.id').text()
-            },
-            success: function(data) {
-                $('.item' + $('.id').text()).remove();
-            }
-        });
+    $.ajax({
+    type: 'post',
+    url: '/deleteItem',
+    data: {
+    '_token': $('input[name=_token]').val(),
+    'id': $('.id').text()
+    },
+    success: function(data) {
+    $('.item' + $('.id').text()).remove();
+    }
+    });
     });
 
 </script>
 
-
-
 <script>
     $(document).on('click', '.view-modal', function() {
-    $('#footer_action_button').hide();
+    $('#footer_action_button').text(" Do not Update");
+    $('#footer_action_button').removeClass('glyphicon-trash');
+    $("#footer_action_button").hide();  
     $('.actionBtn').addClass('btn-success');
     $('.actionBtn').removeClass('btn-danger');
     $('.actionBtn').removeClass('delete');
-    $('.actionBtn').addClass('close');
-    $('.modal-title').text('Close');
+    $('.actionBtn').addClass('edit');
+       $('.actionBtn').hide();  
+    $('.modal-title').text('View');
     $('.deleteContent').hide();
     $('.form-horizontal').show();
     var stuff = $(this).data('info').split(',');
     fillmodalData(stuff)
     $('#myModal').modal('show');  
+    $('#myModal input').attr('readonly', 'readonly');
+    $('#company').attr("disabled", true); 
     
+
     if($("#entity").val() === 'employee') {
     $("#logo").hide();
     $("#lblogo").hide();    
+    $("#iclogo").hide(); 
     $("#url").hide();
     $("#lburl").hide();
     }
@@ -464,13 +460,11 @@ $(document).on('click', '.delete-modal', function() {
     $("#company").hide();
     $("#lbcompany").hide();    
     }    
-    
+
     $("#errorid").hide();
     $("#entity").hide();
     });
 
-
-    
     function fillmodalData(details){
     $('#id').val(details[0]);
     $('#name').val(details[1]);
@@ -482,9 +476,43 @@ $(document).on('click', '.delete-modal', function() {
     $('#url').val(details[8]);
     $('#logo').val(details[9]);
 
-     }
-    
- 
+    }
+
+    $('.modal-footer').on('click', '.edit', function() {
+    $.ajax({
+    type: 'post',
+    url: '/editItem',
+    data: {
+    '_token': $('input[name=_token]').val(),
+    'id': $("#id").val(),
+    'name': $('#name').val(),
+    'email': $('#email').val(),
+    'password': $('#password').val(),    
+    'username': $('#username').val(),
+    'phone': $('#phone').val(),
+    'entity': $('#entity').val(),       
+    'company': $('#company').val(),
+    'url': $('#url').val(),
+    'logo': $('#logo').val()
+
+
+    },
+    success: function(data) {
+    location.reload() 
+    },
+    error: function(jqXhr, json, errorThrown){// this are default for ajax errors 
+    var errors = jqXhr.responseJSON;
+    var errorsHtml = '';
+    $.each(errors['errors'], function (index, value) {
+    errorsHtml += '' + value + '';
+    });
+    errorsHtml = 'Errors detected : ' + errorsHtml + ' ';
+    $('#errorid').show();
+    $('#myModal').modal('show'); 
+    $('#errorid').val(errorsHtml);
+    }
+    });
+    });
 
 </script>
 

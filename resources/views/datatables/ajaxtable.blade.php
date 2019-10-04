@@ -25,6 +25,7 @@
                                 <th>Email</th>
                                 <th>Username</th>
                                 <th>Phone</th>
+                                <th>Entity</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,7 +56,8 @@
     { "data": "name" },
     { "data": "email" },
     { "data": "username" },
-    { "data": "phone" }
+    { "data": "phone" },
+    { "data": "entity" }
     ]
     });
     });

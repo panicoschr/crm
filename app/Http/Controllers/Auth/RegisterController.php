@@ -50,26 +50,20 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         
-        
- if ($data['url'] !== NULL && $data['url'] !== '') {
-            return Validator::make($data, [
-                        'name' => ['required', 'string', 'max:255'],
-                        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                        'password' => ['required', 'string', 'min:8', 'confirmed'],
-                        'entity' => ['required', 'string', 'max:255'],
-                        'username' => ['required', 'string', 'max:255', 'min:8', 'unique:users'],
-                        'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
-                        'url' => ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'],
-            ]);
+         $rules = [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'entity' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'min:8', 'unique:users'],
+            'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+        ];
+
+        if ($data['url'] !== NULL && $data['url'] !== '') {
+            $rules['url'] = ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'];
+            return Validator::make($data, $rules);
         } else {
-            return Validator::make($data, [
-                        'name' => ['required', 'string', 'max:255'],
-                        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                        'password' => ['required', 'string', 'min:8', 'confirmed'],
-                        'entity' => ['required', 'string', 'max:255'],
-                        'username' => ['required', 'string', 'max:255', 'min:8', 'unique:users'],
-                        'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
-            ]);
+            return Validator::make($data, $rules);
         }
     }
 
@@ -80,6 +74,26 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data) {
+
+        $final_filename = null;
+
+        if (array_key_exists('logo', $data)) {
+
+            if ($data['logo'] == !'') {
+                $target_dir = '../public/logos/';
+                $file = $_FILES['logo']['name'];
+                $path = pathinfo($file);
+                $filename = $path['filename'];
+                $ext = $path['extension'];
+                $temp_name = $_FILES['logo']['tmp_name'];
+                $path_filename_ext = $target_dir . $filename . '.' . $ext;
+                move_uploaded_file($temp_name, $path_filename_ext);
+                $final_filename = $filename . '.' . $ext;
+            }
+        } else {
+            $final_filename = null;
+        }
+
         return User::create([
                     'name' => $data['name'],
                     'email' => $data['email'],
@@ -89,9 +103,9 @@ class RegisterController extends Controller
                     'username' => $data['username'],
                     'phone' => $data['phone'],
                     'url' => $data['url'],
-                    'logo' => $data['logo'],
+                    'logo' => $final_filename,
         ]);
-    }
+     }
     
     
 }
