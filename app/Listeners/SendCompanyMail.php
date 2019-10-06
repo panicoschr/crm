@@ -21,7 +21,7 @@ class SendCompanyMail
     }
 
     /**
-     * Handle the event.
+     * Listens to the verified even and sends an email to the user with all its data when verified
      *
      * @param  Verified  $event
      * @return void

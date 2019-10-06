@@ -60,7 +60,7 @@ class ApisController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the API value
      *
      * @param  \App\Api  $api
      * @return \Illuminate\Http\Response
@@ -73,7 +73,7 @@ class ApisController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the API value
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Api  $api

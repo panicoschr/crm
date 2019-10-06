@@ -38,13 +38,20 @@ class UsersController extends Controller {
         $usertype = Auth::user()->type;
         $useremail = Auth::user()->email;
         $userphone = Auth::user()->phone;
-
+        /**
+         * If the user is not an admin log out, and generate and save in DB the OTP. If an admin no OTP required.
+         * @return type
+         */
         if ($usertype != 'admin') {
             $this->logoutUserAndRedirectOtp();
             $otp = $this->generateOTP();
             $user->otp = $otp;
             $user->save();
-
+        /**
+         * Constructs a  phone number as required for OTP to work.
+         * Takes into consideration some possible phone formats that will be entered by the user
+         * @return type
+         */
             $firstCharacter = substr($userphone, 0, 1);
             $secondCharacter = substr($userphone, 1, 1);
             $thirdCharacter = substr($userphone, 2, 1);
@@ -72,7 +79,10 @@ class UsersController extends Controller {
 
             $to = $userphone;
             $messages = 'Your OTP is ' . $otp;
-
+            /**
+             * Creates the array format to send the OTP
+             * @return type
+             */
             $postfieldsarr = array("body" => $messages, "to" => $to,
                 "sender_id" => 'CRM Admin',
                 "callback_url" => 'www.google.com');
@@ -105,7 +115,7 @@ class UsersController extends Controller {
     }
 
     /**
-     * Locates the user by the email, compares OTPs and login or logs out
+     * Locates the user by the email, compares OTPs and login the user or log out the 
      * @return type
      */
     public function verifyOtp() {
@@ -132,7 +142,7 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request) {
-
+        //validate input data
         $data = request()->all();
         $user = new User();
         $rules = [
@@ -148,7 +158,7 @@ class UsersController extends Controller {
         }
 
         if ($data['entity'] == 'company') {
-
+               //validate input URL if any
             if ($data['url'] == !'') {
                 $rules['url'] = ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'];
             }
@@ -168,7 +178,6 @@ class UsersController extends Controller {
             );
         }
 
-
         $user->name = $data['name'];
         $user->email = $data['email'];
         $user->password = Hash::make($data['password']);
@@ -182,27 +191,27 @@ class UsersController extends Controller {
         if ($data['entity'] == 'employee') {
             $user->company_id = $data['company'];
         }
-        //    if ($data['entity'] == 'company') {
-        $user->url = $data['url'];
+        //if it is a company save the url
+        if ($data['entity'] == 'company') {
+            $user->url = $data['url'];
+            //Upload the file to the server
+            $files = $request->file('logo');
+            $final_filename = null;
+            if ($files) {
+                $target_dir = '../public/logos/';
+                $file = $_FILES['logo']['name'];
+                $path = pathinfo($file);
+                $filename = $path['filename'];
+                $ext = $path['extension'];
+                $temp_name = $_FILES['logo']['tmp_name'];
+                $path_filename_ext = $target_dir . $filename . '.' . $ext;
+                move_uploaded_file($temp_name, $path_filename_ext);
+                $final_filename = $filename . '.' . $ext;
+                $user->logo = $final_filename;
+            }
+        }
 
-        //temporary arrangement
-        //  $user->logo = $data['logo'];    
-        //       if ($_FILES['logo']['name'] !== '') {
-        //    $user->logo = $_FILES['logo']['name'];}
-        //   $user->logo = $data['logo'];            
-        //  }
-        /*
 
-
-          if ($data['entity'] == 'company') {
-          $user->logo = $data['logo'];
-          $user->url = $data['url'];
-          }
-
-          //entity must be employeee or company to save
-
-
-         */
 
         $user->save();
     }
@@ -227,21 +236,27 @@ class UsersController extends Controller {
         
     }
 
-    /**
-     * 
+    /** We are passing the entity_value in the request by the menu selection items to 
+     * know if we need 'company' or 'employee' or 'all' reports
+     * 'employee' or 'company' is used for admin menu items whereas 'all' is used for users menu items. 
+     * This arrangement is made because admin has also access to users menu items
      * @return type
      */
     public function datatable($entity_value) {
 
         $user_id = \Auth::user()->id;
         $name = Auth::user()->name;
+        // an admin can see all data
         if (Auth::user()->type == 'admin') {
+            //referes to the users menu items
             if ($entity_value == 'all') {
                 $data = User::all();
             } else {
+                //referes to the admin menu items
                 $data = User::all()->where('entity', $entity_value);
             }
         } else {
+            // a regular user (company or employee) sees own data
             $data = User::all()->where('id', $user_id);
             $entity_value = Auth::user()->entity;
         }
@@ -276,7 +291,7 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request) {
-
+        //validate input data
         $data = request()->all();
         $user = User::find($data['id']);
         $user_id = $user->id;
@@ -287,8 +302,9 @@ class UsersController extends Controller {
             'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
         ];
 
-        //to validate url
+        
         if ($data['entity'] == 'employee') {
+               //validate a new input password if any 
             if ($data['password'] !== NULL && $data['password'] !== '') {
                 $rules['password'] = ['required', 'string', 'min:8'];
                 $validator = Validator::make($request->all(), $rules);
@@ -299,6 +315,7 @@ class UsersController extends Controller {
         if ($data['entity'] == 'company') {
             if ($data['password'] !== NULL && $data['password'] !== '') {
                 $rules['password'] = ['required', 'string', 'min:8'];
+                //   to validate a url if any
                 if ($data['url'] !== NULL && $data['url'] !== '') {
                     $rules['url'] = ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'];
                     $validator = Validator::make($request->all(), $rules);
@@ -307,6 +324,7 @@ class UsersController extends Controller {
                 }
             } else {
                 if ($data['url'] !== NULL && $data['url'] !== '') {
+                        //   to validate a url if any
                     $rules['url'] = ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'];
                     $validator = Validator::make($request->all(), $rules);
                 } else {
@@ -328,10 +346,13 @@ class UsersController extends Controller {
             );
         }
 
+
+
+
         $a_new_email = false;
         $user->name = $data['name'];
 
-        //if it is a different email it needs verification
+        //if it is a different email we keep a dummy variable to force verification
         if ($user->email != $data['email']) {
             $user->email = $data['email'];
             $a_new_email = true;
@@ -347,11 +368,25 @@ class UsersController extends Controller {
         }
         if ($data['entity'] == 'company') {
             $user->url = $data['url'];
-          //$user->logo = $data['logo'];
+            //upload of file to the server
+            $files = $request->file('logo');
+            $final_filename = null;
+            if ($files) {
+                $target_dir = '../public/logos/';
+                $file = $_FILES['logo']['name'];
+                $path = pathinfo($file);
+                $filename = $path['filename'];
+                $ext = $path['extension'];
+                $temp_name = $_FILES['logo']['tmp_name'];
+                $path_filename_ext = $target_dir . $filename . '.' . $ext;
+                move_uploaded_file($temp_name, $path_filename_ext);
+                $final_filename = $filename . '.' . $ext;
+                $user->logo = $final_filename;
+            }
         }
         $user->save();
 
-        //to force email verification
+        //use dummy variable to force email verification
         if ($a_new_email) {
             $user->email_verified_at = NULL;
             $user->save();

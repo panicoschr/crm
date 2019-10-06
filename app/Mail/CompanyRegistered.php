@@ -24,7 +24,7 @@ class CompanyRegistered extends Mailable
 
 
     /**
-     * Build the message.
+     * Build the message when a company is registered
      *
      * @return $this
      */
