@@ -82,7 +82,7 @@
                                     <td>{{$item->url}}
                                     </td>
                                     <td>
-                                        <img src="/logos/{{ $item->logo }}" height="30px" width="30px" />
+                                        <img src="/logos/{{ $item->logo }}" height="100px" width="100px" />
                                     </td>
                                 @endif       
                                 @if ($entity_value === 'all')  
@@ -194,13 +194,18 @@
                                 <input type="text" name="url" class="form-control" id="url">
                             </div> 
                             <div class="form-group" id="logo-group-id">
-                                <label class="control-label col-sm-2" for="logo">Logo</label>
-                                <input type="file" name="logo">     
-                                    @if ($entity_value === 'company') 
-                    
-                           
-                                    @endif
+                                @if ($entity_value === 'company')
+                                    <label class="control-label col-sm-2" for="logo">Logo</label>
+                                    <input type="file" name="logo" onchange="hidePictureFunction()">   
+
+                                @endif
                             </div>     
+                            <div class="form-group" id="logo-image-group-id">
+                                @if ($entity_value === 'company')
+                                    <label class="control-label col-sm-2" id="id-logo-img" for="logo-img">Logo</label>
+                                    <img name="logo-img" id="logo-img" height="100px" width="100px" />
+                                @endif
+                            </div>                                   
                         </form>
                         <div class="deleteContent">
                             Are you Sure you want to delete <span class="name"></span> ? <span
@@ -238,9 +243,10 @@
 
 
 <script>
-    //EDIT MODAL
     
-    $(document).on('click', '.edit-modal', function() {
+    //EDIT MODAL
+          
+    $(document).on('click', '.edit-modal', function() {    
         $('#footer_action_button').text(" Update");
         $('#footer_action_button').addClass('glyphicon-check');
         $('#footer_action_button').removeClass('glyphicon-trash');
@@ -252,18 +258,21 @@
         $('.deleteContent').hide();
         $('.form-horizontal').show();
         var stuff = $(this).data('info').split(',');
-        fillmodalData(stuff)
+        fillmodalData(stuff);
+        $('#logo-img').attr('src', '/logos/' + stuff[9]);   
         $('#myModal').modal('show');  
-
+        
         if($("#entity").val() === 'employee') {
             $("#logo-group-id").hide();
+            $("#logo-image-group-id").hide();
             $("#url-group-id").hide();
         }
         if($("#entity").val() === 'company') {
             $("#company-group-id").hide();
+            $("#id-logo-img").hide();
         }    
         $("#errorid").hide();
-        $("#entity").hide();
+        $("#entity").hide();    
     });
 
     function fillmodalData(details){
@@ -274,10 +283,9 @@
         $('#phone').val(details[5]);
         $('#entity').val(details[6]);    
         $('#company').val(details[7]);
-        $('#url').val(details[8]);
-        $('#logo').val(details[9]);
+        $('#url').val(details[8]);   
     }
-    
+     
     //Submit data using form and ajax call
     $('.modal-footer').on('click', '.edit', function(e) {
         e.preventDefault();  
@@ -305,7 +313,12 @@
             }
         });
     });
-
+    
+    //this function is trigerred when user changes the logo to another logo 
+    //to hide the old logo picture to avoid misleading
+    function hidePictureFunction(){
+          $("#logo-img").hide();
+    }    
 </script>
 
 
@@ -313,6 +326,7 @@
 <script>
     
     //NEW MODAL
+    
     $(document).on('click', '.new-modal', function() {
         $('#footer_action_button').text(" Save");
         $('#footer_action_button').addClass('glyphicon-check');
@@ -327,10 +341,12 @@
         $('#myModal').modal('show');  
         if($("#entity").val() === 'employee') {
             $("#logo-group-id").hide();
+            $("#logo-image-group-id").hide();
             $("#url-group-id").hide();
         }
         if($("#entity").val() === 'company') {
             $("#company-group-id").hide();
+            $("#logo-image-group-id").hide();            
         }    
         $("#errorid").hide();
         $("#entity").hide();
@@ -424,10 +440,13 @@
         $('.deleteContent').hide();
         $('.form-horizontal').show();
         var stuff = $(this).data('info').split(',');
-        fillmodalData(stuff)
+        fillmodalData(stuff);
+        $('#logo-img').attr('src', '/logos/' + stuff[9]);   
         $('#myModal').modal('show');  
-        $('#myModal input').attr('readonly', 'readonly');
+        $('#myModal input').attr('readonly', 'readonly');     
         $('#company').attr("disabled", true); 
+        $("#logo-group-id").hide();
+    
 
         if($("#entity").val() === 'employee') {
             $("#logo-group-id").hide();
@@ -450,7 +469,6 @@
         $('#entity').val(details[6]);    
         $('#company').val(details[7]);
         $('#url').val(details[8]);
-        $('#logo').val(details[9]);
     }
     
     //View data using form and ajax call
