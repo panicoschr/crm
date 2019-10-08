@@ -11,6 +11,7 @@ use App\Api;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Carbon;
 
 class UsersController extends Controller {
 
@@ -210,9 +211,9 @@ class UsersController extends Controller {
                 $user->logo = $final_filename;
             }
         }
-
-
-
+        
+        // all new employees and company insertions made by the administrator will be verified immediately
+        $user->email_verified_at = new Carbon();
         $user->save();
     }
 
