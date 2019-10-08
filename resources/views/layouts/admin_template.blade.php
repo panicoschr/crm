@@ -126,7 +126,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="/datatable/all" class="nav-link">
+                                        <a href="/all" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>{{ trans('sentence.userinfonorender')}}</p>
                                         </a>
@@ -150,13 +150,13 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/datatable/employee" class="nav-link">
+                <a href="/employee" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                  <p>{{ trans('sentence.employees')}}</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/datatable/company" class="nav-link">
+                <a href="/company" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                <p>{{ trans('sentence.companies')}}</p>
                 </a>

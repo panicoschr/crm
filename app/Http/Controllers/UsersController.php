@@ -242,8 +242,11 @@ class UsersController extends Controller {
      * This arrangement is made because admin has also access to users menu items
      * @return type
      */
-    public function datatable($entity_value) {
-
+    public function datatable(Request $request) {
+        
+        $url_entity_value = $request->getPathInfo();
+        //from the url take the entity value, to be aware which data we need, employee or company or all
+        $entity_value = substr($url_entity_value, 1) ;    
         $user_id = \Auth::user()->id;
         $name = Auth::user()->name;
         // an admin can see all data

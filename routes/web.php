@@ -29,7 +29,10 @@ Route::post('/apis/update', 'ApisController@update')->middleware('is_admin');
 Route::get('/otp', 'UsersController@sendOtp')->name('otp');
 Route::post('/verifyotp', 'UsersController@verifyOtp')->name('votp');
 
-Route::get('/datatable/{entity_value}/', 'UsersController@datatable')->name('datatable')->middleware('verified');
+Route::get('/employee', 'UsersController@datatable')->name('employee')->middleware('verified');
+Route::get('/company', 'UsersController@datatable')->name('company')->middleware('verified');
+Route::get('/all', 'UsersController@datatable')->name('all')->middleware('verified');
+
 Route::post('/newItem', 'UsersController@create')->middleware('verified');
 Route::post('/editItem', 'UsersController@update')->middleware('verified');
 Route::post('/deleteItem', 'UsersController@destroy')->middleware('verified');
