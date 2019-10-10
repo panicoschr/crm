@@ -22,8 +22,8 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
-Route::get('/apisedit', 'ApisController@edit')->middleware('is_admin');
-Route::post('/apis/update', 'ApisController@update')->middleware('is_admin');
+Route::get('/apisedit', 'ApisController@edit')->middleware('verified','is_admin');
+Route::post('/apis/update', 'ApisController@update')->middleware('verified','is_admin');
 
 
 Route::get('/otp', 'UsersController@sendOtp')->name('otp');
@@ -33,9 +33,9 @@ Route::get('/employee', 'UsersController@datatable')->name('employee')->middlewa
 Route::get('/company', 'UsersController@datatable')->name('company')->middleware('verified');
 Route::get('/all', 'UsersController@datatable')->name('all')->middleware('verified');
 
-Route::post('/newItem', 'UsersController@create')->middleware('verified');
+Route::post('/newItem', 'UsersController@create')->middleware('verified', 'is_admin');
 Route::post('/editItem', 'UsersController@update')->middleware('verified');
-Route::post('/deleteItem', 'UsersController@destroy')->middleware('verified');
+Route::post('/deleteItem', 'UsersController@destroy')->middleware('verified','is_admin');
 
 Route::get('/apiuserinfo', 'ApiForAjaxController@getUsers')->name('api.user.info')->middleware('verified');
 Route::get('/ajax', 'UsersController@ajax')->name('ajax')->middleware('verified');

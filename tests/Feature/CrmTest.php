@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\User;
 
 
 class CrmTest extends TestCase
@@ -13,23 +13,33 @@ class CrmTest extends TestCase
      * @return void
      */
     
- 
 
   /** @test */
-    public function only_logged_in_users_can_see_employees()
+    public function only_logged_in_users_can_see_data()
     {
-        $response = $this->get('/employees');
-        $response->assertRedirect('/login');
+        $user = factory(User::class)->make();
+        $response = $this->actingAs($user)->get('/all');
+        $response->assertSuccessful();
+    }
+        
+    /** @test */
+    public function a_default_user_cannot_access_the_admin_section()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user)
+            ->get('/apisedit')
+            ->assertRedirect('home');
     }
     
-     /** @test */ 
-        public function only_logged_in_users_can_see_companies()
+    /** @test */
+    public function an_admin_can_access_the_admin_api_section()
     {
-        $response = $this->get('/companies');
-        $response->assertRedirect('/login');
+        $admin = factory(User::class)
+            ->states('admin')
+            ->create();
+        
+        $this->actingAs($admin)
+            ->get('/apisedit')
+            ->assertStatus(200);
     }
-    
-
-    
-
 }
