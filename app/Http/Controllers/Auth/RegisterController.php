@@ -61,10 +61,14 @@ class RegisterController extends Controller
 
         if ($data['url'] !== NULL && $data['url'] !== '') {
             $rules['url'] = ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'];
-            return Validator::make($data, $rules);
-        } else {
-            return Validator::make($data, $rules);
-        }
+        } 
+        if (array_key_exists('logo', $data)) {
+            if ($data['logo'] == !''){
+                $rules['logo'] = ['image', 'dimensions:min_width=100,min_height=100'];     
+            }
+        }        
+              
+        return Validator::make($data, $rules);
     }
 
     /**

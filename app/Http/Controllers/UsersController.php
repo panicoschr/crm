@@ -154,17 +154,19 @@ class UsersController extends Controller {
             'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
         ];
 
-        if ($data['entity'] == 'employee') {
-            $validator = Validator::make($request->all(), $rules);
-        }
-
         if ($data['entity'] == 'company') {
                //validate input URL if any
             if ($data['url'] == !'') {
                 $rules['url'] = ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'];
             }
-            $validator = Validator::make($request->all(), $rules);
-        }
+            //validate input file if any
+            $files = $request->file('logo');
+            if ($files) {
+                $rules['logo'] = ['image', 'dimensions:min_width=100,min_height=100'];     
+            }
+         }           
+            
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             if ($request->ajax()) {
@@ -196,7 +198,6 @@ class UsersController extends Controller {
         if ($data['entity'] == 'company') {
             $user->url = $data['url'];
             //Upload the file to the server
-            $files = $request->file('logo');
             $final_filename = null;
             if ($files) {
                 $target_dir = '../public/logos/';
@@ -306,37 +307,24 @@ class UsersController extends Controller {
             'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
         ];
 
-        
-        if ($data['entity'] == 'employee') {
-               //validate a new input password if any 
-            if ($data['password'] !== NULL && $data['password'] !== '') {
-                $rules['password'] = ['required', 'string', 'min:8'];
-                $validator = Validator::make($request->all(), $rules);
-            } else {
-                $validator = Validator::make($request->all(), $rules);
-            }
-        }
+        //validate the password if changed
+        if ($data['password'] !== NULL && $data['password'] !== '') {
+            $rules['password'] = ['required', 'string', 'min:8'];       
+        } 
         if ($data['entity'] == 'company') {
-            if ($data['password'] !== NULL && $data['password'] !== '') {
-                $rules['password'] = ['required', 'string', 'min:8'];
-                //   to validate a url if any
-                if ($data['url'] !== NULL && $data['url'] !== '') {
-                    $rules['url'] = ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'];
-                    $validator = Validator::make($request->all(), $rules);
-                } else {
-                    $validator = Validator::make($request->all(), $rules);
-                }
-            } else {
-                if ($data['url'] !== NULL && $data['url'] !== '') {
-                        //   to validate a url if any
-                    $rules['url'] = ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'];
-                    $validator = Validator::make($request->all(), $rules);
-                } else {
-                    $validator = Validator::make($request->all(), $rules);
-                }
+            //validate input URL if any
+            if ($data['url'] == !'') {
+                $rules['url'] = ['required', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'];
             }
-        }
-
+            //validate input file if any
+            $files = $request->file('logo');
+            if ($files) {
+                $rules['logo'] = ['image', 'dimensions:min_width=100,min_height=100'];     
+            }
+         }           
+            
+        $validator = Validator::make($request->all(), $rules);       
+        
         if ($validator->fails()) {
             if ($request->ajax()) {
                 return response()->json(array(
@@ -349,9 +337,6 @@ class UsersController extends Controller {
                     $request, $validator
             );
         }
-
-
-
 
         $a_new_email = false;
         $user->name = $data['name'];
@@ -373,7 +358,6 @@ class UsersController extends Controller {
         if ($data['entity'] == 'company') {
             $user->url = $data['url'];
             //upload of file to the server
-            $files = $request->file('logo');
             $final_filename = null;
             if ($files) {
                 $target_dir = '../public/logos/';
