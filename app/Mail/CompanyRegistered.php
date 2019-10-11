@@ -36,10 +36,10 @@ class CompanyRegistered extends Mailable
                         ->subject('Company Registration Confirmation')
                         ->markdown('mails.emailbody')
                         ->with([
-                            'name' => 'You have just registered your company, ' . $data['name']. '. '.
-                            'Email is ' . $data['email']. ' , '.
-                            'Username is ' . $data['username']. ', and '.
-                            'Phone is ' . $data['phone']
+                            'name' => 'Company Registration confirmation for ' . $data['name']. '. '.
+                            'Email : ' . $data['email']. ' , '.
+                            'Username : ' . $data['username']. ', and '.
+                            'Phone : ' . $data['phone']
         ]);
     }
 

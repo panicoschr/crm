@@ -390,10 +390,12 @@ class UsersController extends Controller {
         }
         $user->save();
 
-        //use dummy variable to force email verification
-        if ($a_new_email) {
+        //use dummy variable to force email verification only when the update 
+        //of the email is done by the person itself and not the admin
+        if (($a_new_email) && (Auth::user()->type == 'default')) {
             $user->email_verified_at = NULL;
             $user->save();
+            $user->sendEmailVerificationNotification();
         }
     }
 
