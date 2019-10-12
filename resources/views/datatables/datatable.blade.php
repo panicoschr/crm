@@ -195,7 +195,7 @@
                             </div> 
                             <div class="form-group" id="logo-group-id">
                                 @if ($entity_value === 'company')
-                                    <label class="control-label col-sm-2" for="logo">Logo</label>
+                                    <label class="control-label col-sm-2" for="logo">Logo(min 100x100)</label>
                                     <input type="file" name="logo" onchange="hidePictureFunction()">   
 
                                 @endif
