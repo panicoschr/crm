@@ -57,6 +57,7 @@ class RegisterController extends Controller
             'entity' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'min:8', 'unique:users'],
             'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+            'entity' => ['required'],
         ];
 
         if ($data['url'] !== NULL && $data['url'] !== '') {
